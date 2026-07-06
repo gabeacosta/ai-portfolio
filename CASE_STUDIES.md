@@ -112,7 +112,7 @@ Architect everything local-first with cloud as fallback only. Own compute hardwa
 ### Revenue per Client
 | Product | Monthly |
 |---------|---------|
-| Growth Engine | $1,497 |
+| Growth Engine | $1,797 |
 | Lead Recovery | $2,497 |
 | Arachne Claw (self-serve) | $50 |
 

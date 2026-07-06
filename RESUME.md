@@ -134,7 +134,7 @@ Proprietary iRELOP scoring (Motivation 40, Opportunity 35, Profile 25), automate
 
 **DealiQ**. AI-powered real estate investment across Phoenix, Vegas, AZ, UT. 100+ leads/week through automated qualification and voice agent outreach.
 
-**Gentic AI**. AI automation platform for local SMBs. Growth Engine ($1,497/mo), Lead Recovery ($2,497/mo). Target: $57K MRR.
+**Gentic AI**. AI automation platform for local SMBs. Growth Engine ($1,797/mo), Lead Recovery ($2,497/mo). Target: $57K MRR.
 
 **VoiceScheduleAI**. AI appointment scheduling with custom voice agents.
 
