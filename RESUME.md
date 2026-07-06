@@ -89,15 +89,15 @@ Scrapling, Firecrawl, Crawl4AI, anti-bot bypass, adaptive DOM parsing, structure
 
 ---
 
-## What I've Built (All Live in Production)
+## What I've Built
 
-### Arachne Platform: Agent Orchestration SaaS
-Full-stack agent management: real-time spider web visualization, Kanban pipeline, budget controls, multi-tenant isolation, Stripe billing, tiered pricing. Self-serve $50/mo sandbox (Arachne Claw) feeding enterprise tiers. Next.js, WebSocket, PostgreSQL, Docker.
+### Arachne Platform: Agent Orchestration SaaS (sunset, substrate repurposed)
+Full-stack agent management: real-time spider web visualization, Kanban pipeline, budget controls, multi-tenant isolation, Stripe billing, tiered pricing. Next.js, WebSocket, PostgreSQL, Docker. The product was sunset; the substrate is being repurposed as an internal tenant-aware control plane rather than run as a standalone SaaS.
 
 ### Markspace Protocol: Multi-Agent Coordination
 Novel stigmergy-based coordination replacing direct messaging between AI agents. Guard-enforced identity, 6 scoped domains, 4-tier autonomy (autonomous / notify-then-act / approval-required / blocked). Approval flow via Telegram inline keyboards.
 
-### Custom Intent Classifier. 96.6% Accuracy
+### Custom Intent Classifier. 95.5% → 100% Cold-Eval Accuracy
 Fine-tuned Qwen 2.5 1.5B with LoRA for real-time voice call classification. 9-class model, $0/month inference on Apple Silicon. 3-tier cascade: MLX, Ollama, cloud. Outperforms generic classifiers on domain-specific calls.
 
 ### Hybrid Compute Platform. $15/month Total
@@ -138,7 +138,7 @@ Proprietary iRELOP scoring (Motivation 40, Opportunity 35, Profile 25), automate
 
 **VoiceScheduleAI**. AI appointment scheduling with custom voice agents.
 
-**Arachne Claw**. $50/mo self-serve AI agent sandbox. 7 agent types, dashboard + email delivery, REST API. Top-of-funnel for Gentic AI.
+**Arachne Claw**. Self-serve AI agent sandbox (7 agent types, dashboard + email delivery, REST API), built as top-of-funnel for Gentic AI. Sunset; substrate being repurposed internally.
 
 ---
 
@@ -157,7 +157,7 @@ Proprietary iRELOP scoring (Motivation 40, Opportunity 35, Profile 25), automate
 
 [![Email](https://img.shields.io/badge/gabriel%40gentic.pro-contact-22c55e?style=for-the-badge)](mailto:gabriel@gentic.pro)
 [![Portfolio](https://img.shields.io/badge/Portfolio-README-000?style=for-the-badge)](README.md)
-[![Arachne Claw](https://img.shields.io/badge/Arachne_Claw-Live-22c55e?style=for-the-badge)](https://swarm.gentic.pro/claw)
+[![VoxMaestro](https://img.shields.io/badge/VoxMaestro-pip_install-22c55e?style=for-the-badge)](https://github.com/genticai0910-png/voxmaestro)
 
 
 </div>

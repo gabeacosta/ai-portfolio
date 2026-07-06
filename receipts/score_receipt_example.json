@@ -1,23 +1,35 @@
 {
-  "receipt_type": "score_receipt_example",
-  "version": "public-safe-placeholder",
+  "receipt_type": "irelop_score_example",
+  "version": "1.0.0",
+  "note": "Matches the WARM-tier example in CASE_STUDIES.md Case Study 6 (Zero-Cost Lead Enrichment Pipeline). Formula weights are public (Motivation 40 / Opportunity 35 / Profile 25); the signal-to-point mapping within each band is not.",
   "input_summary": {
-    "lead_source": "redacted",
+    "lead_source": "enrichment_pipeline",
     "property_market": "example_market",
-    "conversation_status": "example_status"
+    "distress_signals_present": ["high_equity", "tax_delinquent"]
   },
   "score_summary": {
+    "total_score": 77,
     "tier": "WARM",
-    "confidence": "example",
-    "reason_codes": [
-      "motivation_signal_present",
-      "timeline_requires_follow_up",
-      "property_context_incomplete"
-    ]
+    "breakdown": {
+      "motivation": { "max": 40, "signals_matched": 2 },
+      "opportunity": { "max": 35, "signals_matched": 1 },
+      "profile": { "max": 25, "signals_matched": 1 }
+    },
+    "tier_thresholds": {
+      "HOT": ">= 80",
+      "WARM": ">= 60",
+      "COOL": ">= 40",
+      "PASS": "< 40"
+    }
+  },
+  "recommended_action": {
+    "channel": "sms",
+    "priority": 2,
+    "follow_up_voice": true
   },
   "audit": {
-    "formula_redacted": true,
-    "customer_data_redacted": true,
-    "generated_for": "public_portfolio_receipt"
+    "formula_weights_public": true,
+    "signal_to_point_mapping_redacted": true,
+    "customer_data_redacted": true
   }
 }

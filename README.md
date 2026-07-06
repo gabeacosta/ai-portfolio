@@ -1,21 +1,16 @@
 <div align="center">
 
-# Gabe Acosta | Governed MCP Spine
+# Gabe Acosta | AI Infrastructure Engineer
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![Postgres](https://img.shields.io/badge/Postgres-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
-![Qdrant](https://img.shields.io/badge/Qdrant-24B47E?style=flat-square)
-![n8n](https://img.shields.io/badge/n8n-EA4B71?style=flat-square&logo=n8n&logoColor=white)
 ![MLX](https://img.shields.io/badge/MLX-000000?style=flat-square&logo=apple&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-ffffff?style=flat-square&logoColor=black)
-![Pipecat](https://img.shields.io/badge/Pipecat-111827?style=flat-square)
 
-I build a governed MCP spine for cost-controlled AI agents, voice workflows, and business automation.
+Voice AI, agent orchestration, and the governance layer underneath both.
 
 [Receipts](receipts/) | [Case Studies](CASE_STUDIES.md) | [Resume](RESUME.md) | [How I Work](HOW_I_WORK.md)
 
@@ -25,52 +20,42 @@ I build a governed MCP spine for cost-controlled AI agents, voice workflows, and
 
 ## Start Here
 
-This account is organized around one core system: a governed MCP spine.
+Three things to look at, in order of "fastest to verify yourself":
 
-The spine is the control layer that decides which agents can use which tools, under which policy, budget, approval, and audit constraints.
+1. **[`voxmaestro`](https://github.com/genticai0910-png/voxmaestro)** — YAML-driven voice agent conductor. Full public repo, Apache-2.0, `pip install voxmaestro` and run it. Not a slice of something bigger — this is the whole thing.
+2. **[`mcp-audit-plugin`](https://github.com/genticai0910-png/mcp-audit-plugin)** — a Claude Code plugin that audits MCP server configs for performance issues. Install it and point it at your own MCP setup.
+3. **[`governed-mcp-spine-public`](https://github.com/genticai0910-png/governed-mcp-spine-public)** and **[`clue-runtime-public`](https://github.com/genticai0910-png/clue-runtime-public)** — curated, tested slices of the private systems that actually run the businesses below. Each README explains exactly what's excluded and why; each has a green CI badge you can click through to a real run, not a static image.
 
-Start here:
-
-1. **Governed MCP spine** - policy, budget, approval, and audit boundaries for agent/tool execution
-2. **Voice orchestration** - `voxmaestro` as a deterministic voice workflow layer
-3. **Cost-controlled inference** - `smart-ai-router` as a routing utility on the spine
-
-If you are reviewing the work technically, start with the spine model first, then inspect VoxMaestro and the router as concrete modules.
+If you only have two minutes: clone `voxmaestro`, it's the fastest thing here to verify with your own hands.
 
 ---
 
 ## What I Build
 
-| Domain | What to look for | Evidence status |
+| Domain | What to look for | Where |
 |---|---|---|
-| Governed MCP spine | Tool access, policy checks, budget limits, approvals, receipts, and audit trails | Public-safe architecture surface |
-| Voice-agent orchestration | Deterministic state control, filler gates, handoff protocol | Public alpha in `voxmaestro` |
-| Cost-controlled inference | Local-first routing, provider fallback, budget-aware model choice | Scaffold in `smart-ai-router`; receipts needed |
-| Workflow automation | n8n workflow categories and tool bridges | Redacted inventory planned |
-| Business scoring interfaces | Public-safe contracts only, no formulas or private data | Placeholder receipts only |
+| Governed agent authorization | HMAC envelopes, RBAC, hash-chained tamper-evident audit log | [`governed-mcp-spine-public`](https://github.com/genticai0910-png/governed-mcp-spine-public) — 14/14 tests passing in CI |
+| Agent-runtime reliability patterns | Health checks that can't lie about dependencies, startup drift fingerprinting | [`clue-runtime-public`](https://github.com/genticai0910-png/clue-runtime-public) — 12/12 tests passing in CI |
+| Voice-agent orchestration | Deterministic state control, filler gates, handoff protocol | [`voxmaestro`](https://github.com/genticai0910-png/voxmaestro) |
+| Multi-tenant data layer | Postgres state machine with row-locked concurrent transitions | [`agentic-crm-os`](https://github.com/genticai0910-png/agentic-crm-os) |
+| Cost-controlled inference | Local-first routing, provider fallback | [`smart-ai-router`](https://github.com/genticai0910-png/smart-ai-router) — honestly labeled scaffold, not yet package-hardened |
+| Business scoring methodology | iRELOP formula weights, tier thresholds, one worked example | [`receipts/score_receipt_example.json`](receipts/score_receipt_example.json) |
 
-This portfolio is a public trust surface, not a complete source dump. Proprietary scoring formulas, customer data, credentials, private URLs, internal IPs, and private infrastructure details are intentionally excluded.
+This portfolio is a public trust surface, not a complete source dump. Proprietary scoring formulas, customer data, credentials, private URLs, internal IPs, and private infrastructure details are intentionally excluded. Every repo linked above is real, public, and — where it has tests — green in CI at time of writing; check the badge, not this sentence.
 
 ---
 
 ## Repo Truth Map
 
-| Type | Meaning |
-|---|---|
-| Owned product | Built or actively shaped as part of the governed MCP and automation stack |
-| Public-safe scaffold | Exposes contracts/tests without proprietary business logic |
-| Reference/fork | Used for learning, integration research, or upstream experimentation |
-| Archived/research | Not part of the active product surface |
+| Type | Meaning | Repos |
+|---|---|---|
+| Owned product, full public mirror | Built as part of this stack, published as-is (secret-scanned, no redaction needed) | `voxmaestro` |
+| Owned product, redacted public slice | A curated, secret-scanned subset of a larger private system — see each repo's own "What's not here" section | `governed-mcp-spine-public`, `clue-runtime-public` |
+| Owned product, schema/data-layer reference | Real, tested code; no application server | `agentic-crm-os` |
+| Public scaffold, honestly labeled | Real but incomplete — the repo's own README says so | `smart-ai-router` |
+| This repo | Portfolio, case studies, receipts | `ai-portfolio` |
 
-This distinction matters because this account contains both original product work and reference repositories.
-
-| Category | Repos |
-|---|---|
-| Owned product | governed MCP spine, `voxmaestro`, `smart-ai-router`, `ai-portfolio` |
-| Business IP / public-safe scaffold | redacted scoring and qualification contracts |
-| Workflow infrastructure | `n8n-ollama-agents`, `awesome-n8n-templates` |
-| Voice research/reference | `pipecat`, `voice-ui-kit`, `voicemode`, `wyoming-piper` |
-| Research/reference forks | `gpt-researcher`, `autogpt`, `llm.c`, `trufflehog` |
+Every repo in the table above is real and public under this account today. If a claim elsewhere in this portfolio names a repo not in this table, that's a bug in the portfolio — [open an issue](https://github.com/genticai0910-png/ai-portfolio/issues).
 
 ---
 
@@ -78,28 +63,26 @@ This distinction matters because this account contains both original product wor
 
 | Project | What it proves | Status |
 |---|---|---|
-| Governed MCP spine | Agents use tools through policy, budget, approval, and audit boundaries | Public-safe architecture surface |
-| VoxMaestro | YAML-driven voice orchestration, deterministic state machines, filler gates, handoff protocol | Alpha, runnable |
-| smart-ai-router | Cost-aware multi-provider LLM routing concept | Public scaffold; needs package hardening |
-| ai-portfolio | Architecture, receipts, and public proof map | Active portfolio |
+| Governed MCP spine (public slice) | Agents authorize tool calls through capability checks, write-scope enforcement, and a hash-chained audit log — with the concurrency and rotation-safety properties proven by real tests, not asserted | 14/14 tests passing, CI green |
+| Clue Runtime (public slice) | Two production-incident-driven reliability patterns: dependency-aware health checks, startup drift fingerprinting | 12/12 tests passing, CI green |
+| VoxMaestro | YAML-driven voice orchestration, deterministic state machines, filler gates, handoff protocol | Public alpha, runnable, Apache-2.0 |
+| Agentic CRM OS | Multi-tenant lead lifecycle state machine with `FOR UPDATE` row locking — the race-condition-safety claim is demonstrated by an actual concurrency test, not just described | Schema + state machine, tested |
 
 ---
 
-## Proof Receipts Needed
+## Proof Receipts
 
-See [`receipts/`](receipts/) for public-safe proof artifacts.
+See [`receipts/`](receipts/) for public-safe proof artifacts backing the specific numbers used elsewhere in this portfolio.
 
-Current receipt backlog:
+| Receipt | What it backs |
+|---|---|
+| [VSAI eval summary](receipts/vsai_eval_summary.md) | The 95.5%→100% intent-classifier accuracy figure, methodology, and known failure modes (including where it does *not* hold — adversarial phrasing) |
+| [Local inference cost model](receipts/local_inference_cost_model.md) | The $0-marginal-cost local-inference claim, with explicit assumptions and scale limits |
+| [n8n inventory (redacted)](receipts/n8n_inventory_redacted.md) | Workflow categories and design patterns, without credentials or webhook paths |
+| [Score receipt example](receipts/score_receipt_example.json) | One worked iRELOP scoring example, consistent with the Case Study 6 figures below |
+| [Security sweep (redacted)](receipts/security_sweep_redacted.md) | Secret-scanning, audit-chain integrity, and drift-detection methodology — including two real gaps found and fixed during the most recent audit |
 
-| Receipt | Purpose | Status |
-|---|---|---|
-| VSAI eval summary | Show evaluation method and headline accuracy without private datasets | Placeholder |
-| Local inference cost model | Show cloud-to-local cost comparison | Placeholder |
-| n8n inventory redacted | Show workflow categories without credentials or webhook URLs | Placeholder |
-| Score receipt example | Show deterministic scoring metadata without proprietary formulas | Placeholder |
-| Security sweep redacted | Show hardening workflow without exposing infrastructure | Placeholder |
-
-Claims that are not linked to receipts should be treated as architecture context, not audited production proof.
+Claims elsewhere in this portfolio that aren't linked to one of these should be read as architecture and operating narrative, not audited production proof — see [`CASE_STUDIES.md`](CASE_STUDIES.md)'s own framing at the top of that document.
 
 ---
 

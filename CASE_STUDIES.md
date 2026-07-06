@@ -15,7 +15,7 @@
 ## Case Study 1: Replacing Cloud AI with Local Inference
 
 ![Savings](https://img.shields.io/badge/savings-$500%2Fmo-22c55e?style=for-the-badge)
-![Accuracy](https://img.shields.io/badge/accuracy-96.6%25-22c55e?style=for-the-badge)
+![Accuracy](https://img.shields.io/badge/accuracy-95.5pct_to_100pct-22c55e?style=for-the-badge)
 ![Latency](https://img.shields.io/badge/latency-%3C200ms-22c55e?style=for-the-badge)
 
 ### Challenge
@@ -29,7 +29,7 @@ Fine-tuned Qwen 2.5 1.5B with LoRA on domain-specific voice transcripts. Deploye
 |--------|--------|-------|
 | Monthly inference cost | $300-500 | **$0** |
 | Classification latency | 800ms-1.2s | **<200ms** |
-| Accuracy | ~88% (generic model) | **96.6%** |
+| Accuracy | ~88% (generic model) | **95.5%→100%** (prefix-normalizer fix, see [receipt](../receipts/vsai_eval_summary.md)) |
 | Uptime | Dependent on API provider | **Self-controlled, 3-tier fallback** |
 
 ### Key Insight
