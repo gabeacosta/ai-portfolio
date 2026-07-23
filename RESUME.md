@@ -157,7 +157,7 @@ Proprietary iRELOP scoring (Motivation 40, Opportunity 35, Profile 25), automate
 
 [![Email](https://img.shields.io/badge/gabriel%40gentic.pro-contact-22c55e?style=for-the-badge)](mailto:gabriel@gentic.pro)
 [![Portfolio](https://img.shields.io/badge/Portfolio-README-000?style=for-the-badge)](README.md)
-[![VoxMaestro](https://img.shields.io/badge/VoxMaestro-pip_install-22c55e?style=for-the-badge)](https://github.com/genticai0910-png/voxmaestro)
+[![VoxMaestro](https://img.shields.io/badge/VoxMaestro-pip_install-22c55e?style=for-the-badge)](https://github.com/gabeacosta/voxmaestro)
 
 
 </div>

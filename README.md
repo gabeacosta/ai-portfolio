@@ -22,9 +22,9 @@ Voice AI, agent orchestration, and the governance layer underneath both.
 
 Three things to look at, in order of "fastest to verify yourself":
 
-1. **[`voxmaestro`](https://github.com/genticai0910-png/voxmaestro)** — YAML-driven voice agent conductor. Full public repo, Apache-2.0, `pip install voxmaestro` and run it. Not a slice of something bigger — this is the whole thing.
-2. **[`mcp-audit-plugin`](https://github.com/genticai0910-png/mcp-audit-plugin)** — a Claude Code plugin that audits MCP server configs for performance issues. Install it and point it at your own MCP setup.
-3. **[`governed-mcp-spine-public`](https://github.com/genticai0910-png/governed-mcp-spine-public)** and **[`clue-runtime-public`](https://github.com/genticai0910-png/clue-runtime-public)** — curated, tested slices of the private systems that actually run the businesses below. Each README explains exactly what's excluded and why; each has a green CI badge you can click through to a real run, not a static image.
+1. **[`voxmaestro`](https://github.com/gabeacosta/voxmaestro)** — YAML-driven voice agent conductor. Full public repo, Apache-2.0, `pip install voxmaestro` and run it. Not a slice of something bigger — this is the whole thing.
+2. **[`mcp-audit-plugin`](https://github.com/gabeacosta/mcp-audit-plugin)** — a Claude Code plugin that audits MCP server configs for performance issues. Install it and point it at your own MCP setup.
+3. **[`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine)** and **[`clue-runtime`](https://github.com/gabeacosta/clue-runtime)** — curated, tested slices of the private systems that actually run the businesses below. Each README explains exactly what's excluded and why; each has a green CI badge you can click through to a real run, not a static image.
 
 If you only have two minutes: clone `voxmaestro`, it's the fastest thing here to verify with your own hands.
 
@@ -34,11 +34,11 @@ If you only have two minutes: clone `voxmaestro`, it's the fastest thing here to
 
 | Domain | What to look for | Where |
 |---|---|---|
-| Governed agent authorization | HMAC envelopes, RBAC, hash-chained tamper-evident audit log | [`governed-mcp-spine-public`](https://github.com/genticai0910-png/governed-mcp-spine-public) — 14/14 tests passing in CI |
-| Agent-runtime reliability patterns | Health checks that can't lie about dependencies, startup drift fingerprinting | [`clue-runtime-public`](https://github.com/genticai0910-png/clue-runtime-public) — 12/12 tests passing in CI |
-| Voice-agent orchestration | Deterministic state control, filler gates, handoff protocol | [`voxmaestro`](https://github.com/genticai0910-png/voxmaestro) |
-| Multi-tenant data layer | Postgres state machine with row-locked concurrent transitions | [`agentic-crm-os`](https://github.com/genticai0910-png/agentic-crm-os) |
-| Cost-controlled inference | Local-first routing, provider fallback | [`smart-ai-router`](https://github.com/genticai0910-png/smart-ai-router) — honestly labeled scaffold, not yet package-hardened |
+| Governed agent authorization | HMAC envelopes, RBAC, hash-chained tamper-evident audit log | [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine) — 14/14 tests passing in CI |
+| Agent-runtime reliability patterns | Health checks that can't lie about dependencies, startup drift fingerprinting | [`clue-runtime`](https://github.com/gabeacosta/clue-runtime) — 12/12 tests passing in CI |
+| Voice-agent orchestration | Deterministic state control, filler gates, handoff protocol | [`voxmaestro`](https://github.com/gabeacosta/voxmaestro) |
+| Multi-tenant data layer | Postgres state machine with row-locked concurrent transitions | [`agentic-crm-os`](https://github.com/gabeacosta/agentic-crm-os) |
+| Cost-controlled inference | Local-first routing, provider fallback | [`smart-ai-router`](https://github.com/gabeacosta/smart-ai-router) — honestly labeled scaffold, not yet package-hardened |
 | Business scoring methodology | iRELOP formula weights, tier thresholds, one worked example | [`receipts/score_receipt_example.json`](receipts/score_receipt_example.json) |
 
 This portfolio is a public trust surface, not a complete source dump. Proprietary scoring formulas, customer data, credentials, private URLs, internal IPs, and private infrastructure details are intentionally excluded. Every repo linked above is real, public, and — where it has tests — green in CI at time of writing; check the badge, not this sentence.
@@ -50,12 +50,12 @@ This portfolio is a public trust surface, not a complete source dump. Proprietar
 | Type | Meaning | Repos |
 |---|---|---|
 | Owned product, full public mirror | Built as part of this stack, published as-is (secret-scanned, no redaction needed) | `voxmaestro` |
-| Owned product, redacted public slice | A curated, secret-scanned subset of a larger private system — see each repo's own "What's not here" section | `governed-mcp-spine-public`, `clue-runtime-public` |
+| Owned product, redacted public slice | A curated, secret-scanned subset of a larger private system — see each repo's own "What's not here" section | `governed-mcp-spine`, `clue-runtime` |
 | Owned product, schema/data-layer reference | Real, tested code; no application server | `agentic-crm-os` |
 | Public scaffold, honestly labeled | Real but incomplete — the repo's own README says so | `smart-ai-router` |
 | This repo | Portfolio, case studies, receipts | `ai-portfolio` |
 
-Every repo in the table above is real and public under this account today. If a claim elsewhere in this portfolio names a repo not in this table, that's a bug in the portfolio — [open an issue](https://github.com/genticai0910-png/ai-portfolio/issues).
+Every repo in the table above is real and public under this account today. If a claim elsewhere in this portfolio names a repo not in this table, that's a bug in the portfolio — [open an issue](https://github.com/gabeacosta/ai-portfolio/issues).
 
 ---
 
@@ -123,6 +123,6 @@ Case studies should be read as architecture and operating narratives unless a li
 
 ## Contact
 
-- GitHub: [github.com/genticai0910-png](https://github.com/genticai0910-png)
+- GitHub: [github.com/gabeacosta](https://github.com/gabeacosta)
 - Email: gabriel@gentic.pro
 - Focus: governed MCP infrastructure, tool routing, cost controls, voice agents
