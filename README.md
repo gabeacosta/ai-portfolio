@@ -1,123 +1,173 @@
 <div align="center">
 
-# Gabe Acosta | AI Infrastructure Engineer
+# Gabe Acosta | Forward Deployed Engineer
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Postgres](https://img.shields.io/badge/Postgres-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![MLX](https://img.shields.io/badge/MLX-000000?style=flat-square&logo=apple&logoColor=white)
-![Ollama](https://img.shields.io/badge/Ollama-ffffff?style=flat-square&logoColor=black)
+### Applied AI & Agent Systems
 
-Voice AI, agent orchestration, and the governance layer underneath both.
+I turn ambiguous operating problems into deployed AI systems, then turn the repeated parts into reusable infrastructure.
 
-[Receipts](receipts/) | [Case Studies](CASE_STUDIES.md) | [Resume](RESUME.md) | [How I Work](HOW_I_WORK.md)
+[Deployments](#deployment-proof) · [Resume](RESUME.md) · [How I Work](HOW_I_WORK.md) · [Forward Deployed Playbook](PLAYBOOKS/FORWARD_DEPLOYED_PLAYBOOK.md) · [Field Notes](FIELD-NOTES/production-incidents.md)
 
 </div>
 
 ---
 
-## Start Here
+## The Work
 
-Three things to look at, in order of "fastest to verify yourself":
-
-1. **[`voxmaestro`](https://github.com/gabeacosta/voxmaestro)** — YAML-driven voice agent conductor. Full public repo, Apache-2.0, `pip install voxmaestro` and run it. Not a slice of something bigger — this is the whole thing.
-2. **[`mcp-audit-plugin`](https://github.com/gabeacosta/mcp-audit-plugin)** — a Claude Code plugin that audits MCP server configs for performance issues. Install it and point it at your own MCP setup.
-3. **[`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine)** and **[`clue-runtime`](https://github.com/gabeacosta/clue-runtime)** — curated, tested slices of the private systems that actually run the businesses below. Each README explains exactly what's excluded and why; each has a green CI badge you can click through to a real run, not a static image.
-
-If you only have two minutes: clone `voxmaestro`, it's the fastest thing here to verify with your own hands.
-
----
-
-## What I Build
-
-| Domain | What to look for | Where |
-|---|---|---|
-| Governed agent authorization | HMAC envelopes, RBAC, hash-chained tamper-evident audit log | [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine) — 14/14 tests passing in CI |
-| Agent-runtime reliability patterns | Health checks that can't lie about dependencies, startup drift fingerprinting | [`clue-runtime`](https://github.com/gabeacosta/clue-runtime) — 12/12 tests passing in CI |
-| Voice-agent orchestration | Deterministic state control, filler gates, handoff protocol | [`voxmaestro`](https://github.com/gabeacosta/voxmaestro) |
-| Multi-tenant data layer | Postgres state machine with row-locked concurrent transitions | [`agentic-crm-os`](https://github.com/gabeacosta/agentic-crm-os) |
-| Cost-controlled inference | Local-first routing, provider fallback | [`smart-ai-router`](https://github.com/gabeacosta/smart-ai-router) — honestly labeled scaffold, not yet package-hardened |
-| Business scoring methodology | iRELOP formula weights, tier thresholds, one worked example | [`receipts/score_receipt_example.json`](receipts/score_receipt_example.json) |
-
-This portfolio is a public trust surface, not a complete source dump. Proprietary scoring formulas, customer data, credentials, private URLs, internal IPs, and private infrastructure details are intentionally excluded. Every repo linked above is real, public, and — where it has tests — green in CI at time of writing; check the badge, not this sentence.
-
----
-
-## Repo Truth Map
-
-| Type | Meaning | Repos |
-|---|---|---|
-| Owned product, full public mirror | Built as part of this stack, published as-is (secret-scanned, no redaction needed) | `voxmaestro` |
-| Owned product, redacted public slice | A curated, secret-scanned subset of a larger private system — see each repo's own "What's not here" section | `governed-mcp-spine`, `clue-runtime` |
-| Owned product, schema/data-layer reference | Real, tested code; no application server | `agentic-crm-os` |
-| Public scaffold, honestly labeled | Real but incomplete — the repo's own README says so | `smart-ai-router` |
-| This repo | Portfolio, case studies, receipts | `ai-portfolio` |
-
-Every repo in the table above is real and public under this account today. If a claim elsewhere in this portfolio names a repo not in this table, that's a bug in the portfolio — [open an issue](https://github.com/gabeacosta/ai-portfolio/issues).
-
----
-
-## Flagship Work
-
-| Project | What it proves | Status |
-|---|---|---|
-| Governed MCP spine (public slice) | Agents authorize tool calls through capability checks, write-scope enforcement, and a hash-chained audit log — with the concurrency and rotation-safety properties proven by real tests, not asserted | 14/14 tests passing, CI green |
-| Clue Runtime (public slice) | Two production-incident-driven reliability patterns: dependency-aware health checks, startup drift fingerprinting | 12/12 tests passing, CI green |
-| VoxMaestro | YAML-driven voice orchestration, deterministic state machines, filler gates, handoff protocol | Public alpha, runnable, Apache-2.0 |
-| Agentic CRM OS | Multi-tenant lead lifecycle state machine with `FOR UPDATE` row locking — the race-condition-safety claim is demonstrated by an actual concurrency test, not just described | Schema + state machine, tested |
-
----
-
-## Proof Receipts
-
-See [`receipts/`](receipts/) for public-safe proof artifacts backing the specific numbers used elsewhere in this portfolio.
-
-| Receipt | What it backs |
-|---|---|
-| [VSAI eval summary](receipts/vsai_eval_summary.md) | The 95.5%→100% intent-classifier accuracy figure, methodology, and known failure modes (including where it does *not* hold — adversarial phrasing) |
-| [Local inference cost model](receipts/local_inference_cost_model.md) | The $0-marginal-cost local-inference claim, with explicit assumptions and scale limits |
-| [n8n inventory (redacted)](receipts/n8n_inventory_redacted.md) | Workflow categories and design patterns, without credentials or webhook paths |
-| [Score receipt example](receipts/score_receipt_example.json) | One worked iRELOP scoring example, consistent with the Case Study 6 figures below |
-| [Security sweep (redacted)](receipts/security_sweep_redacted.md) | Secret-scanning, audit-chain integrity, and drift-detection methodology — including two real gaps found and fixed during the most recent audit |
-
-Claims elsewhere in this portfolio that aren't linked to one of these should be read as architecture and operating narrative, not audited production proof — see [`CASE_STUDIES.md`](CASE_STUDIES.md)'s own framing at the top of that document.
-
----
-
-## How It Fits Together
+Forward deployed engineering is not model demos or architecture theater. It is the full path from a customer problem to a system that survives contact with production:
 
 ```text
-Ingestion
-  Voice transcripts, web forms, CRM events, workflow triggers
-
-Intelligence
-  Intent classification, public-safe scoring contracts, RAG, local/cloud LLM routing
-
-Coordination
-  Governed MCP spine, policy scopes, budget controls, approval boundaries
-
-Orchestration
-  n8n workflows, Postgres state, Redis queues/cache, provider fallback paths
-
-Action
-  Voice agents, SMS/email handoff, CRM updates, reporting, alerts
+customer problem
+  -> discovery
+  -> technical scope
+  -> integration
+  -> production
+  -> evaluation
+  -> hardening
+  -> measurable impact
+  -> reusable platform capability
 ```
 
-The strategy is local-first where possible, cloud where useful, and governed execution wherever a model or agent can affect money, customer communication, or business records.
+That is how I build.
+
+I work across AI agents, voice systems, workflow automation, local inference, MCP/tool execution, verification, runtime reliability, and the business systems around them. The common pattern is the same: enter a messy environment, find the load-bearing constraint, ship the smallest useful vertical slice, instrument it, pressure-test it, and extract only the primitives worth reusing.
+
+**The deployments are the story. The repos are the evidence.**
 
 ---
 
-## Case Studies
+## Deployment Proof
 
-Case studies should be read as architecture and operating narratives unless a linked receipt proves the metric.
+### 01 — Real-Estate Lead Operations
 
-- [Conversation Engine](CASE_STUDIES.md#conversation-engine)
-- [Cloud to Local Inference](CASE_STUDIES.md#case-study-1-replacing-cloud-ai-with-local-inference)
-- [Cloud to Local TTS](CASE_STUDIES.md#case-study-2-zero-cost-tts-for-multi-language-voice-agents)
-- [Manual to Automated Qualification](CASE_STUDIES.md#case-study-3-from-manual-lead-qualification-to-full-automation)
-- [Operating Cost Analysis](CASE_STUDIES.md#case-study-4-ai-agent-operating-cost-vs-revenue)
+**Problem:** a solo operator was manually reviewing 100+ inbound leads per week; only about 40 were being contacted and the rest were aging out.
+
+**Deployed:** webhook ingestion, normalization, lead scoring, tier-based routing, voice-agent outreach, CRM sync, local inference, and fallback paths.
+
+**Reported operating outcome:** 100+ leads/week contacted, hot-lead first contact under 15 minutes, manual qualification reduced to zero for the automated path, and uncontacted lead leakage reduced below 5%.
+
+[Read the deployment →](DEPLOYMENTS/01-real-estate-lead-operations.md)
+
+### 02 — Governed Agent Execution
+
+**Problem:** tool-capable agents need authorization and evidence before external actions, not just logs after the fact.
+
+**Deployed capability:** HMAC-signed envelopes, capability-based policy checks, write-scope enforcement, approval boundaries, hash-chained audit evidence, rotation safety, and TOCTOU-safe concurrent writes.
+
+**Public proof:** [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine) exposes the enforcement slice with 14 tests covering the published behavior.
+
+[Read the deployment →](DEPLOYMENTS/02-governed-agent-execution.md)
+
+### 03 — Runtime Wind Tunnel
+
+**Problem:** runtime claims are hard to compare when the model, harness, fault, verifier, and evidence path all move at once.
+
+**Built:** a deterministic two-arm experiment harness around Runtime Lab Specimen 001 with native and governed boundaries, explicit fault schedules, independent verification, append-once evidence bundles, and verification-only replay.
+
+**Public proof:** [`agent-runtime-wind-tunnel`](specimens/agent-runtime-wind-tunnel/) is a zero-key runnable specimen with 14 tests, a six-cell native/governed matrix, real transient-state reset and durable recovery, linked governance receipts, exact eight-file evidence bundles, verification-only replay, and deliberate tamper detection.
+
+**Current boundary:** the private Runtime Lab harness remains fixture-only and not deployed; the public specimen is independently runnable and intentionally smaller. Neither is presented as a model-quality benchmark.
+
+[Run the public specimen →](specimens/agent-runtime-wind-tunnel/) · [Read the deployment →](DEPLOYMENTS/03-runtime-wind-tunnel.md)
+
+---
+
+## Evidence Map
+
+| Capability | Evidence | What it demonstrates |
+|---|---|---|
+| Voice-agent orchestration | [`voxmaestro`](https://github.com/gabeacosta/voxmaestro) | YAML state machines, tool bridges, filler gates, handoff protocol, runtime boundaries |
+| Agent authorization | [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine) | Signed envelopes, capability policy, write scopes, tamper-evident audit chain |
+| Runtime experimentation | [`agent-runtime-wind-tunnel`](specimens/agent-runtime-wind-tunnel/) | Runnable controlled-fault specimen: native/governed parity, durable recovery, independent verdicts, replay/tamper verification |
+| Runtime reliability | [`clue-runtime`](https://github.com/gabeacosta/clue-runtime) | Dependency-aware readiness and startup drift fingerprinting extracted from incidents |
+| MCP configuration diagnostics | [`mcp-audit-plugin`](https://github.com/gabeacosta/mcp-audit-plugin) | Practical MCP audit tooling |
+| Multi-tenant state | [`agentic-crm-os`](https://github.com/gabeacosta/agentic-crm-os) | PostgreSQL lifecycle state and row-locked transitions |
+| Cost-controlled inference | [`smart-ai-router`](https://github.com/gabeacosta/smart-ai-router) | Local-first/provider-routing scaffold, explicitly labeled as incomplete |
+| Private runtime workbench | Runtime Lab | Active private implementation; public proof is extracted above rather than exposing the private system |
+| Portfolio receipts | [`receipts/`](receipts/) | Public-safe artifacts supporting selected quantitative claims |
+
+The purpose of this map is not to make every repo look finished. It is to make the maturity and proof boundary obvious.
+
+---
+
+## What I Do Forward Deployed
+
+I am most useful when the requirement is still partly operational, partly technical, and not cleanly owned by a single product surface.
+
+I can:
+
+- sit with the workflow and identify the actual failure mode before choosing the stack;
+- scope an end-to-end vertical slice instead of a disconnected proof of concept;
+- integrate models, tools, APIs, CRMs, queues, databases, voice systems, and local/cloud infrastructure;
+- build explicit approval, budget, write-scope, and side-effect boundaries around agents;
+- instrument the system so failures become observable evidence rather than anecdotes;
+- reproduce incidents and convert them into regression tests or runtime invariants;
+- evaluate the system under controlled faults instead of assuming provider success means system success;
+- extract reusable platform primitives only after the field implementation proves they are real.
+
+---
+
+## How I Work
+
+My default loop is:
+
+```text
+Discover -> Scope -> Build -> Integrate -> Ship -> Observe -> Evaluate -> Harden -> Extract
+```
+
+The detailed operating model is in [`HOW_I_WORK.md`](HOW_I_WORK.md), with the reusable field process in [`PLAYBOOKS/FORWARD_DEPLOYED_PLAYBOOK.md`](PLAYBOOKS/FORWARD_DEPLOYED_PLAYBOOK.md).
+
+A few rules matter more than any particular framework:
+
+- **Field truth over architecture preference.** The deployment decides what is useful.
+- **Smallest viable vertical slice.** One complete workflow beats five disconnected components.
+- **Provider completion is not acceptance.** Verification and external effects need explicit ownership.
+- **Logs are telemetry; evidence proves behavior.** Important claims need reproducible support.
+- **Fail closed on authority.** Missing permission must not become implicit permission.
+- **No silent fallbacks.** Degradation should be observable and attributable.
+- **Productize only after recurrence.** Reuse is earned by repeated field pressure.
+
+---
+
+## Production Lessons
+
+Some of the most valuable work in this portfolio came from incidents rather than greenfield design:
+
+- a health endpoint reported `ok` for six days while its database dependency had never started;
+- a hash-chained audit trail silently restarted after log rotation until the chain anchor was corrected;
+- an ephemeral container hotfix could disappear on image recreation, motivating startup fingerprinting.
+
+Those incidents became concrete reliability patterns and tests, not just postmortem prose.
+
+[Read the field notes →](FIELD-NOTES/production-incidents.md)
+
+---
+
+## Proof Standard
+
+This repository is a public proof surface, not a complete source dump.
+
+I distinguish:
+
+- **implemented** — code exists;
+- **tested** — defined behavior has automated checks;
+- **verified** — evidence supports the expected property;
+- **accepted** — the designated verifier or gate has authorized the result;
+- **deployed** — the system is operating in its intended environment.
+
+Those words are not interchangeable here.
+
+Customer data, credentials, private infrastructure, proprietary policy data, and internal runtime details are intentionally excluded. Where a claim has a public receipt or runnable repo, I link it. Where it does not, I label the boundary.
+
+---
+
+## Role Fit
+
+I am targeting Forward Deployed Engineer / Forward Deployed AI Engineer roles where the job is to move between customer discovery, systems integration, production debugging, applied AI, and platform feedback.
+
+The strongest fit is a team that wants an engineer who can own the distance between **"the customer needs this"** and **"the platform can reliably do this again."**
+
+[Resume →](RESUME.md) · [How to evaluate this portfolio →](APPLY.md)
 
 ---
 
@@ -125,4 +175,4 @@ Case studies should be read as architecture and operating narratives unless a li
 
 - GitHub: [github.com/gabeacosta](https://github.com/gabeacosta)
 - Email: gabriel@gentic.pro
-- Focus: governed MCP infrastructure, tool routing, cost controls, voice agents
+- Focus: forward deployed AI, governed agent execution, runtime reliability, voice systems, workflow automation

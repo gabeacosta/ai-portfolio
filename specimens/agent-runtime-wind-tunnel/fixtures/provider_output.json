@@ -1,0 +1,4 @@
+{
+  "recommendation": "Insert a deterministic authorization gate before external effects and verify the emitted evidence independently.",
+  "confidence": 0.93
+}
