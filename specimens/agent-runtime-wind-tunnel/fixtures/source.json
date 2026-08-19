@@ -1,0 +1,8 @@
+{
+  "specimen_id": "public-specimen-001",
+  "objective": "Recommend one control that prevents a model proposal from becoming an unauthorized external effect.",
+  "evidence": [
+    "Provider completion is not acceptance.",
+    "External effects require an explicit authority boundary."
+  ]
+}

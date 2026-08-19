@@ -1,132 +1,249 @@
-<div align="center">
-
 # How I Work
 
-### 8 Engineering Principles
+## Forward Deployed Engineering Operating Model
 
-> Engineering principles that drive every system I build.
+The job is not to deliver an AI demo. The job is to understand the operating problem well enough to ship a useful system, make its behavior observable, harden the failure paths, and feed the recurring lessons back into a reusable platform.
 
-[![Back to Portfolio](https://img.shields.io/badge/Back_to-Portfolio-22c55e?style=flat-square)](README.md)
-[![Resume](https://img.shields.io/badge/Resume-view-000?style=flat-square)](RESUME.md)
-[![Case Studies](https://img.shields.io/badge/Case_Studies-view-f59e0b?style=flat-square)](CASE_STUDIES.md)
+My default loop is:
 
-</div>
-
----
-
-## 1. Local-First, Cloud-Fallback
-![Principle](https://img.shields.io/badge/principle-cost_zero-22c55e?style=flat-square)
-
-Every system starts with the question: **can this run on my own hardware?**
-
-Not because cloud is bad. Because dependency is expensive. When your voice AI pipeline depends on 4 cloud APIs, you inherit 4 SLAs, 4 pricing models, and 4 points of failure. Local-first means I control latency, cost, and uptime. Cloud becomes a fallback, not a crutch.
-
-**Example:** The VSAI Intent Classifier runs on a local Apple Silicon node at $0/month. If the local node goes down, Ollama takes over locally. If local fails, the cloud mirror takes over. Three layers deep before I touch a paid API.
-
----
-
-## 2. Fallback Chains, Not Hope
-![Principle](https://img.shields.io/badge/principle-redundancy-26A5E4?style=flat-square)
-
-Every critical path gets a fallback chain. Not "we should add redundancy later." It's part of the initial architecture.
-
-```
-LLM:      Local MLX -> Local Ollama -> Cloud Grok -> Cloud Gemini -> Cloud Haiku
-TTS:      Piper -> Edge TTS -> espeak
-Compute:  Local compute -> Cloud Docker
-Scraping:  Local Scrapling -> Firecrawl
+```text
+Discover -> Scope -> Build -> Integrate -> Ship -> Observe -> Evaluate -> Harden -> Extract
 ```
 
-Each layer degrades gracefully. The user never knows a failover happened.
+Each stage has a different purpose. Skipping stages usually creates hidden cost later.
 
 ---
 
-## 3. Ship Revenue, Not Demos
-![Principle](https://img.shields.io/badge/principle-production_first-f59e0b?style=flat-square)
+## 1. Discover the Real Constraint
 
-Nothing goes into production as a proof-of-concept. Every system processes real leads, serves real customers, or reduces real costs from day one.
+I start with the workflow, not the model.
 
-This means building ugly-but-functional before pretty-but-theoretical. It means the scoring model ships with 4 tiers and a simple rules engine before spending 3 months training an ML model. It means the TTS stack runs on espeak (robotic but functional) while Piper voices are being evaluated.
+Questions I care about:
 
-**Iterate in production, not in a notebook.**
+- What is the user trying to accomplish?
+- Where does work stall, leak, duplicate, or fail?
+- What is currently manual?
+- Which action has the largest business consequence?
+- Which systems already own state?
+- Where do credentials, permissions, approvals, or compliance constraints live?
+- What would make the deployment obviously useful in the first week?
 
----
+The output is not a feature list. It is a small set of falsifiable statements about the problem.
 
-## 4. Small Models, Big Results
-![Principle](https://img.shields.io/badge/principle-efficiency-22c55e?style=flat-square)
-
-The industry defaults to "use the biggest model you can afford." I default to "use the smallest model that solves the problem."
-
-A 1.5B parameter model fine-tuned on your data beats a 70B general model on your task and costs nothing to run. The VSAI Intent Classifier proves this: 96.6% accuracy on a model that fits alongside a dozen other services on a single local node.
-
-**Model selection framework:**
-1. Can a 1-3B model do this with fine-tuning? Use it.
-2. Does it need general reasoning? Use a 7B model.
-3. Does it need broad knowledge + reasoning? Cloud API, cheapest tier.
-4. Is it customer-facing creative output? Cloud API, premium tier.
+**Example:** "We need an AI lead agent" is not a useful requirement. "100+ inbound leads arrive every week, only ~40 receive timely contact, and hot leads need first contact inside 15 minutes" is.
 
 ---
 
-## 5. Tiered Autonomy for AI Agents
-![Principle](https://img.shields.io/badge/principle-safety-8B5CF6?style=flat-square)
+## 2. Scope a Complete Vertical Slice
 
-Not everything should require human approval. Not everything should be autonomous. The answer is tiers.
+I prefer one end-to-end path over several disconnected components.
 
-```
-Tier 1 AUTONOMOUS:  Scoring, monitoring, analysis. No approval needed.
-Tier 2 NOTIFY:      Deployments, restarts, offers. Notify human, then act.
-Tier 3 APPROVAL:    Outbound calls, SMS, email. Blocked until human approves.
-Tier 4 BLOCKED:     Kill processes, delete data. Never autonomous.
+A useful slice includes the minimum required pieces of:
+
+```text
+input -> state -> decision -> action -> evidence -> operator recovery
 ```
 
-This framework means AI agents can operate at speed on safe actions while maintaining hard gates on actions with real-world consequences.
+If a proposal has a model but no state owner, an action but no authority boundary, or an automation but no recovery path, it is not complete.
+
+I explicitly separate:
+
+- must-have field behavior;
+- temporary integration glue;
+- reusable platform candidates;
+- deferred ideas.
+
+That prevents premature abstraction from consuming the deployment.
 
 ---
 
-## 6. Observability Is Not Optional
-![Principle](https://img.shields.io/badge/principle-visibility-DC382D?style=flat-square)
+## 3. Integrate With the Existing Environment
 
-If I can't see what a system is doing, I don't ship it. Every pipeline gets:
-- **State tracking** for every item in the pipeline
-- **Error classification** that explains why something failed, not just that it failed
-- **Dead letter queues** so nothing gets silently dropped
-- **Audit trails** for every lead state transition and agent action
+Forward-deployed work usually fails at the seams, not in the model call.
 
-The n8n execution logs, PostgreSQL audit tables, and Telegram alerts form a monitoring layer that catches issues before customers notice.
+The important integration questions are things like:
 
----
+- Which system is authoritative for customer state?
+- Is the CRM eventually consistent or transactionally updated?
+- What happens when a webhook arrives twice?
+- What can retry safely?
+- What is the idempotency key?
+- Can the agent write anywhere, or only to a scoped target?
+- What happens when a provider succeeds but the downstream action fails?
+- What does the operator see when the system is degraded?
 
-## 7. The 80/20 of Automation
-![Principle](https://img.shields.io/badge/principle-leverage-f59e0b?style=flat-square)
-
-Not everything should be automated. The goal is to automate the 80% of work that's repetitive and keep humans in the loop for the 20% that requires judgment.
-
-**Automated:** Lead scoring, initial outreach, CRM updates, follow-up scheduling, data normalization, report generation.
-
-**Human-in-the-loop:** Final deal negotiation, complex objection handling, relationship-critical communication, financial transactions.
-
-The automation handles volume. The human handles nuance.
+I use the smallest dependency set that fits the deployment. New infrastructure has to earn its place.
 
 ---
 
-## 8. Own Your Infrastructure
-![Principle](https://img.shields.io/badge/principle-independence-22c55e?style=flat-square)
+## 4. Put Authority Around External Effects
 
-SaaS tools are rentals. When the rental price goes up or the landlord changes the terms, you're stuck.
+A model can propose an action. That does not mean the action is authorized.
 
-I self-host n8n, databases, vector stores, TTS, and ML inference. Not because it's easy (it's not), but because it gives me:
-- **Pricing control** that doesn't scale with someone else's pricing model
-- **Feature control** to modify anything, anytime
-- **Data control** so customer data never leaves my infrastructure
-- **Uptime control** without checking someone else's status page
+For tool-capable systems I want the external effect path to make these things explicit:
 
-The only external dependencies are telephony (Twilio/Bland) and cloud LLMs (fallback only). Everything else runs on hardware I own.
+- caller identity;
+- requested capability;
+- target scope;
+- approval requirements;
+- budget or quota constraints;
+- policy/version identity;
+- durable decision evidence.
+
+The principle is simple:
+
+> Prediction is not permission.
+
+This is why my agent work increasingly separates the model/runtime from the authorization and verification boundaries around it.
 
 ---
 
-<div align="center">
+## 5. Ship With Observability, Not Hope
 
-[![Back to Portfolio](https://img.shields.io/badge/Back_to-Portfolio-22c55e?style=for-the-badge)](README.md)
-[![Case Studies](https://img.shields.io/badge/Case_Studies-view-f59e0b?style=for-the-badge)](CASE_STUDIES.md)
+I do not treat a green HTTP response as operational truth.
 
-</div>
+A deployment should expose enough information to answer:
+
+- Did the workflow start?
+- What state is it in?
+- What dependency failed?
+- What action was attempted?
+- Was that action authorized?
+- Was the effect actually emitted?
+- Did a retry occur?
+- Can an operator recover it without guessing?
+
+The difference between telemetry and evidence matters. Logs help explain behavior. Evidence supports a specific claim about what happened.
+
+---
+
+## 6. Evaluate the System, Not Just the Model
+
+A provider response can be valid while the system is still wrong.
+
+I evaluate at the runtime boundary:
+
+- state transitions;
+- tool selection;
+- fault handling;
+- retry behavior;
+- continuity across restart/reset;
+- side-effect control;
+- evidence integrity;
+- verifier outcomes.
+
+Where possible, I use deterministic fixtures first so failures are attributable. Live-model variation comes after the harness can already prove its own measurement path.
+
+This is the motivation behind the Runtime Wind Tunnel work.
+
+---
+
+## 7. Convert Incidents Into Controls
+
+An incident is useful only if the system becomes harder to break afterward.
+
+My preferred loop is:
+
+```text
+incident -> reproduce -> isolate failure mode -> add control -> add regression proof
+```
+
+Examples from this portfolio:
+
+- a health endpoint reported `ok` while its database dependency was unavailable for six days -> split health from readiness and test both failure directions;
+- a hash-chained audit trail restarted after log rotation -> anchor rotation to durable prior state and add rotation regression tests;
+- an ephemeral container patch disappeared on recreation -> add startup fingerprints for load-bearing code paths.
+
+See [`FIELD-NOTES/production-incidents.md`](FIELD-NOTES/production-incidents.md).
+
+---
+
+## 8. Make Failure Explicit
+
+I prefer explicit degraded states over silent fallbacks.
+
+A fallback is useful when it preserves service. It is dangerous when it hides the fact that the system is no longer operating under the same assumptions.
+
+Good fallback behavior is:
+
+- bounded;
+- observable;
+- attributable;
+- reversible;
+- tested.
+
+The operator should be able to tell which path actually ran.
+
+---
+
+## 9. Extract Platform Capability Only After Recurrence
+
+Field work creates pressure to generalize too early.
+
+I do not want a platform abstraction because it looks elegant. I want it because multiple deployments have proven the same constraint is real.
+
+The sequence is:
+
+```text
+one-off field fix
+  -> repeated pattern
+  -> stable interface
+  -> reusable primitive
+  -> platform capability
+```
+
+That is how a deployment teaches the product team what deserves to become product.
+
+Examples include:
+
+- authorization/write-scope enforcement extracted from tool-capable agent work;
+- runtime health and drift checks extracted from incidents;
+- deterministic conversation state and handoff primitives extracted from voice deployments;
+- independent verification and evidence bundles extracted from runtime-evaluation work.
+
+---
+
+## 10. State Maturity Precisely
+
+I do not use "done" as a catch-all.
+
+I distinguish:
+
+| Term | Meaning |
+|---|---|
+| **Implemented** | The code or configuration exists. |
+| **Tested** | Defined behavior has automated checks. |
+| **Verified** | Evidence supports the property being claimed. |
+| **Accepted** | The designated verifier/gate has authorized the result. |
+| **Deployed** | The system is operating in the intended environment. |
+
+This keeps prototypes from being represented as production systems and prevents test completion from being mistaken for business acceptance.
+
+---
+
+## My Default Engineering Biases
+
+- Small vertical slices over broad rewrites.
+- Explicit state ownership over hidden coordination.
+- Deterministic controls over prompt-only safety.
+- Minimal dependencies over infrastructure fashion.
+- Local-first when it improves cost/control; cloud when it improves the actual deployment.
+- Fail-closed authorization over permissive fallback.
+- Bounded retries over unbounded recovery loops.
+- Reproducible evidence over unsupported completion claims.
+- Reversible changes over migrations with unclear rollback.
+- Field value first; platform extraction second.
+
+---
+
+## The Outcome I Optimize For
+
+A successful forward-deployed engagement should leave behind three things:
+
+1. **A working customer outcome** — the business process is materially better.
+2. **A hardened deployment** — the important failure modes are observable and bounded.
+3. **A reusable lesson** — the platform/product team learned what should be standardized next.
+
+That is the bridge I want to own.
+
+[Back to portfolio](README.md) · [Forward Deployed Playbook](PLAYBOOKS/FORWARD_DEPLOYED_PLAYBOOK.md) · [Deployments](DEPLOYMENTS/01-real-estate-lead-operations.md)

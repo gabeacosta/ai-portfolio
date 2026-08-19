@@ -1,0 +1,10 @@
+[project]
+name = "agent-runtime-wind-tunnel"
+version = "0.1.0"
+description = "Deterministic fault-injection and verification specimen for agent runtimes"
+requires-python = ">=3.11"
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
