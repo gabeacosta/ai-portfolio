@@ -6,13 +6,21 @@ This is a deliberately small public proof of a larger Wind Tunnel design: **hold
 
 No API keys. No network calls. No Docker. No live LLM. Python standard library only.
 
-## 60-second proof
+![Fixed specimen workload, declared faults, native and governed arms, and verification-only replay](../../docs/images/wind-tunnel.svg)
+
+## Run the proof
+
+Requires Python 3.11+. From a fresh checkout:
 
 ```bash
-make test
-make demo
-make tamper
+git clone https://github.com/gabeacosta/ai-portfolio.git
+cd ai-portfolio/specimens/agent-runtime-wind-tunnel
+python3 -m unittest discover -s tests -v
+python3 -m wind_tunnel demo
+python3 -m wind_tunnel tamper
 ```
+
+If this directory is already open, run only the three Python commands. The Makefile offers equivalent `test`, `demo`, and `tamper` shortcuts.
 
 Expected matrix:
 
@@ -23,7 +31,9 @@ context_reset      VERIFIED     VERIFIED
 contradiction      MISMATCH     MISMATCH
 ```
 
-`make tamper` deliberately corrupts recorded evidence. Verification-only replay must return `FAILED / EVIDENCE_HASH_MISMATCH` with **zero replay side effects**.
+The tamper demonstration deliberately corrupts recorded evidence. Verification-only replay reports `FAILED / EVIDENCE_HASH_MISMATCH` with **zero simulated replay effects**. The demonstration itself exits 0 when that expected rejection is detected; direct verification of an altered bundle exits 1.
+
+**Audit check, 2026-10-30:** all 14 tests passed and all six matrix verdicts matched expectations. See the [portfolio audit](../../docs/PORTFOLIO_AUDIT.md) for scope.
 
 ## What this proves
 
@@ -96,7 +106,7 @@ summary.md
 replay.json
 ```
 
-The output directory must not already exist.
+The output directory must not already exist. CLI demo output is illustrative; inspect the generated bundles and verifier results for evidence of a particular run.
 
 ## Run one cell
 

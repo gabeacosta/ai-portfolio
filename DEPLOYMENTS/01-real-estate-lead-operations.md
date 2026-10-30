@@ -1,5 +1,9 @@
 # Deployment 01 — Real-Estate Lead Operations
 
+**Scope:** historical operating account. Outcome figures are operator-reported; this page is not a present-day deployment health check.
+
+![Lead intake, scoring, approval, outreach, and CRM workflow](../docs/images/lead-operations.svg)
+
 ## Customer Problem
 
 A solo real-estate operator was receiving 100+ inbound leads per week but manually researching and qualifying each one. The process took roughly 5–10 minutes per lead before outreach, which meant only about 40 leads/week were actually contacted and many aged out before a useful conversation happened.
@@ -72,16 +76,11 @@ The architectural decision was pragmatic: use enough public/property data to imp
 
 ### Inference
 
-Intent classification moved from generic cloud-model calls to a small domain-tuned Qwen-family model running locally with MLX/Ollama fallback paths.
+The [VSAI evaluation summary](../receipts/vsai_eval_summary.md) describes a small Qwen-family intent classifier evaluated on local Ollama. It reports 95.5%→100% cold-set accuracy after a prefix-normalizer correction and substantially weaker adversarial results. Raw datasets and evaluation outputs are not public, so this summary cannot independently reproduce that result.
 
-The documented evaluation path reports:
+The [cost summary](../receipts/local_inference_cost_model.md) separately associates MLX with conversation-engine inference. These are different workloads and configurations, not evidence of one universal MLX/Ollama fallback chain.
 
-- cloud-style classification latency around 800 ms–1.2 s before the change;
-- local classification below 200 ms;
-- marginal local inference cost reduced to $0;
-- 95.5%→100% accuracy on the documented cold-eval set after a prefix-normalizer correction.
-
-The supporting receipt is [`../receipts/vsai_eval_summary.md`](../receipts/vsai_eval_summary.md).
+The original account also reports cloud classification at 800 ms–1.2 s and local classification below 200 ms, but the published evaluation summary contains no timing trace. Local execution avoids per-request cloud inference charges on that path; hardware, electricity, operations, and fallback usage remain costs.
 
 ### Voice / action path
 
@@ -89,7 +88,7 @@ Voice outreach and callback handling were treated as stateful workflow operation
 
 ---
 
-## Production Outcome
+## Historical Reported Outcomes
 
 The portfolio's operating case study reports:
 
@@ -99,7 +98,7 @@ The portfolio's operating case study reports:
 | Hot-lead first contact | 2–48 hours | <15 minutes |
 | Manual qualification time | 5–10 min/lead | 0 on automated path |
 | Uncontacted lead leakage | ~60% | <5% |
-| Local classifier marginal inference cost | paid API path | $0 |
+| Local classifier API billing | paid API path | no per-request cloud charge on local path; other costs excluded |
 
 These numbers are operating claims from the portfolio case studies; where a public receipt exists, it is linked directly. This repository does not present every operating metric as independently audited.
 

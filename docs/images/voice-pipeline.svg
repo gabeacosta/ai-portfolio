@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520" role="img" aria-labelledby="title desc"><title id="title">Speech synthesis within a voice workflow</title><desc id="desc">Speech synthesis within a voice workflow Historical configurations; provider availability and deployment are not revalidated. Conversation text: Text ready for speech: Voice-agent workflow Choose synthesis: Local or external option: Piper / Edge / Kokoro accounts Fallback path: Handle unavailable synthesis: Explicit failure or alternate Voice output: Telephony integration: Operator handoff when needed Provider accounts describe different configurations. Edge TTS is external; it is not self-hosted.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9" fill="#007F7A"/></marker></defs>
+<rect width="1400" height="520" rx="16" fill="#F7F9FC"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="48" y="64" font-size="36" fill="#10253C" font-weight="700">Speech synthesis within a voice workflow</text>
+<text x="48" y="106" font-size="21" fill="#405570" font-weight="400">Historical configurations; provider availability and deployment are not revalidated.</text>
+<rect x="48.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="48.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="68.0" y="217" font-size="24" fill="#10253C" font-weight="700">Conversation text</text>
+<text x="68.0" y="261" font-size="20" fill="#405570" font-weight="400">Text ready for speech</text>
+<text x="68.0" y="295" font-size="20" fill="#405570" font-weight="400">Voice-agent workflow</text>
+<path d="M345.0,263 L377.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="345.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="386.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="386.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="406.0" y="217" font-size="24" fill="#10253C" font-weight="700">Choose synthesis</text>
+<text x="406.0" y="261" font-size="20" fill="#405570" font-weight="400">Local or external option</text>
+<text x="406.0" y="295" font-size="20" fill="#405570" font-weight="400">Piper / Edge / Kokoro</text><text x="406.0" y="321" font-size="20" fill="#405570" font-weight="400">accounts</text>
+<path d="M683.0,263 L715.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="683.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="724.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="724.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="744.0" y="217" font-size="24" fill="#10253C" font-weight="700">Fallback path</text>
+<text x="744.0" y="261" font-size="20" fill="#405570" font-weight="400">Handle unavailable</text><text x="744.0" y="287" font-size="20" fill="#405570" font-weight="400">synthesis</text>
+<text x="744.0" y="321" font-size="20" fill="#405570" font-weight="400">Explicit failure or</text><text x="744.0" y="347" font-size="20" fill="#405570" font-weight="400">alternate</text>
+<path d="M1021.0,263 L1053.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="1021.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="1062.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="1062.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="1082.0" y="217" font-size="24" fill="#10253C" font-weight="700">Voice output</text>
+<text x="1082.0" y="261" font-size="20" fill="#405570" font-weight="400">Telephony integration</text>
+<text x="1082.0" y="295" font-size="20" fill="#405570" font-weight="400">Operator handoff when</text><text x="1082.0" y="321" font-size="20" fill="#405570" font-weight="400">needed</text>
+<text x="48" y="414" font-size="21" fill="#405570" font-weight="400">Provider accounts describe different configurations. Edge TTS is external; it is not self-hosted.</text>
+<text x="48" y="490" font-size="16" fill="#405570" font-weight="400">ARCHITECTURE SUMMARY  |  Sources and scope are linked in the accompanying write-up</text>
+</g></svg>

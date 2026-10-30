@@ -8,7 +8,7 @@ Las Vegas, NV · [github.com/gabeacosta](https://github.com/gabeacosta) · gabri
 
 ## Summary
 
-Forward deployed engineer and founder-builder focused on turning ambiguous operating problems into production AI systems, then extracting the repeated patterns into reusable infrastructure.
+Forward deployed engineer and founder-builder focused on integrating AI into operating workflows and extracting reusable infrastructure from the resulting field lessons. Public work spans deployment accounts, published code slices, and runnable synthetic experiments.
 
 I work across customer discovery, technical scoping, integrations, workflow automation, voice AI, local inference, MCP/tool execution, runtime reliability, verification, and deployment hardening. My strongest work sits at the boundary between a real business process and the platform primitives required to make that process repeatable, observable, and safe.
 
@@ -35,17 +35,19 @@ customer problem -> discovery -> scope -> integration -> production
 - hot-lead first contact under 15 minutes;
 - manual qualification reduced to zero for the automated path;
 - uncontacted-lead leakage reduced from roughly 60% to below 5%;
-- local intent-classification path reduced marginal inference cost to $0 and latency below 200 ms in the documented evaluation path.
+- local intent classification on Ollama, with 95.5%→100% cold-set accuracy reported after prefix normalization; the same summary reports weaker adversarial-set results.
 
-**Evidence:** [deployment write-up](DEPLOYMENTS/01-real-estate-lead-operations.md), [case studies](CASE_STUDIES.md), [VSAI receipt](receipts/vsai_eval_summary.md).
+The throughput and contact figures are historical operator reports without published execution logs or a measurement window. The accuracy summary does not measure latency or cost savings. Local execution avoids per-request cloud inference charges on that path; hardware, electricity, and operations remain costs.
+
+**Public material:** [deployment account](DEPLOYMENTS/01-real-estate-lead-operations.md), [case studies](CASE_STUDIES.md), [VSAI evaluation summary](receipts/vsai_eval_summary.md), [evidence guide](receipts/README.md).
 
 ### Governed Agent Execution
 
 **Problem:** agents with tool access can affect files, systems, money, and customer communication; authorization cannot be delegated to model intent or reconstructed from logs after the action.
 
-**Built:** capability-based authorization, HMAC-signed request envelopes, write-scope enforcement, approval boundaries, tamper-evident hash chaining, rotation-safe chain anchoring, and TOCTOU-safe concurrent audit writes.
+**Engineering work:** capability-based authorization, HMAC-signed request envelopes, write-scope enforcement, approval boundaries, hash-chained audit records, rotation continuity, and serialized concurrent audit writes. The public repository contains selected mechanisms and a gateway excerpt; it is not a complete runnable policy service.
 
-**Engineering result:** a production incident exposed an audit-chain reset across rotation; the fix converted the failure into regression coverage. The public-safe enforcement slice currently exposes 14 tests for its published behavior.
+**Engineering result:** the published incident account describes an audit-chain reset across rotation and its regression fix. The public slice contains 14 test functions covering write scope (10), rotation continuity (2), and audit concurrency/serialization (2). Those tests do not establish HMAC, role-policy, or full-service coverage.
 
 **Evidence:** [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine), [deployment write-up](DEPLOYMENTS/02-governed-agent-execution.md).
 
@@ -55,15 +57,15 @@ customer problem -> discovery -> scope -> integration -> production
 
 **Built:** a deterministic experiment harness for Runtime Lab Specimen 001 with native and governed arms; baseline, constrained context-reset, and contradiction scenarios; immutable fixture checks; independent verdicts; append-once evidence bundles; and replay with side effects disabled.
 
-**Public proof:** extracted a zero-key synthetic specimen that runs the same six-cell native/governed comparison in public, includes a real transient-state destruction/recovery path, emits linked governed receipts and exact eight-file evidence bundles, and fails verification after deliberate evidence tampering. The dependency-free suite passed 14/14 tests before publication.
+**Runnable public specimen:** a zero-key synthetic experiment compares native and governed arms across six cells, destroys and recovers transient state, emits linked hash-chained records and eight-file evidence bundles, and detects deliberate evidence tampering during verification-only replay. Its dependency-free suite contains 14 tests.
 
-**Engineering boundary:** the private harness remains fixture-backed and not deployed; the public specimen is runnable but intentionally not a production runtime or live-provider/model-quality benchmark.
+**Engineering boundary:** the 2026-08-19 portfolio snapshot describes the private harness as fixture-backed and not deployed; the public specimen is runnable but intentionally not a production runtime or live-provider/model-quality benchmark.
 
 **Evidence:** [run the public Wind Tunnel specimen](specimens/agent-runtime-wind-tunnel/), [deployment write-up](DEPLOYMENTS/03-runtime-wind-tunnel.md).
 
 ### Voice-Agent Orchestration
 
-**Built:** VoxMaestro, an open-source YAML-driven voice-agent conductor with deterministic state transitions, pre-LLM filler gates, mid-call tool bridging, a three-phase human handoff protocol, guardrails, and an early Pipecat adapter.
+**Built:** VoxMaestro, a public alpha YAML-driven voice-agent conductor with deterministic state transitions, pre-LLM filler gates, mid-call tool bridging, a three-phase human handoff protocol, guardrails, and an early Pipecat adapter.
 
 **Evidence:** [`voxmaestro`](https://github.com/gabeacosta/voxmaestro).
 
@@ -112,19 +114,19 @@ customer problem -> discovery -> scope -> integration -> production
 
 ---
 
-## Public Engineering Proof
+## Public Engineering Surfaces
 
-| Repository / surface | Proof surface |
+| Repository / surface | Scope |
 |---|---|
-| [`voxmaestro`](https://github.com/gabeacosta/voxmaestro) | Full public voice orchestration project |
-| [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine) | Public-safe governed execution slice; 14 published tests |
+| [`voxmaestro`](https://github.com/gabeacosta/voxmaestro) | Published voice orchestration project with an early Pipecat adapter |
+| [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine) | Enforcement excerpts; 14 tests for write scope, rotation, and audit serialization; gateway needs omitted runtime dependencies |
 | [`agent-runtime-wind-tunnel`](specimens/agent-runtime-wind-tunnel/) | Runnable zero-key runtime-evaluation specimen; 14-test suite, six-cell fault matrix, durable recovery, replay/tamper verification |
-| [`clue-runtime`](https://github.com/gabeacosta/clue-runtime) | Incident-derived runtime reliability patterns; 12 published tests |
-| [`mcp-audit-plugin`](https://github.com/gabeacosta/mcp-audit-plugin) | MCP configuration audit tooling |
+| [`clue-runtime`](https://github.com/gabeacosta/clue-runtime) | Published incident-derived runtime reliability patterns |
+| [`mcp-audit-plugin`](https://github.com/gabeacosta/mcp-audit-plugin) | MCP configuration diagnostic prototype |
 | [`agentic-crm-os`](https://github.com/gabeacosta/agentic-crm-os) | Multi-tenant PostgreSQL state/lifecycle reference |
-| [`ai-portfolio`](https://github.com/gabeacosta/ai-portfolio) | Deployment narratives, field notes, receipts, and proof map |
+| [`ai-portfolio`](https://github.com/gabeacosta/ai-portfolio) | Deployment narratives, field notes, evidence summaries, and project map |
 
-Private systems and active experiments are described only to the level that can be supported without exposing customer data, credentials, proprietary policy data, or internal infrastructure.
+Deployment narratives describe reported operating experience. Public code and tests support the specific mechanisms they include; the [evidence guide](receipts/README.md) explains what the summary artifacts establish.
 
 ---
 

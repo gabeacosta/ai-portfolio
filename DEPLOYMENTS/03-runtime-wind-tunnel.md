@@ -1,4 +1,8 @@
-# Deployment 03 — Runtime Wind Tunnel
+# Runtime Wind Tunnel — Public Specimen and Design Notes
+
+**Scope:** the public synthetic specimen was rerun on 2026-10-30. Private Runtime Lab descriptions below reflect the portfolio's 2026-08-19 design snapshot and were not revalidated against private systems.
+
+![Runtime experiment matrix and evidence-verification boundary](../docs/images/wind-tunnel.svg)
 
 ## System Problem
 
@@ -20,16 +24,16 @@ The private Runtime Lab implementation is not required to evaluate the core engi
 
 A deliberately small public specimen lives at [`specimens/agent-runtime-wind-tunnel/`](../specimens/agent-runtime-wind-tunnel/). It has no API keys, network calls, Docker requirement, or live LLM dependency.
 
-From the portfolio root:
+With Python 3.11+, from the portfolio root:
 
 ```bash
 cd specimens/agent-runtime-wind-tunnel
-make test
-make demo
-make tamper
+python3 -m unittest discover -s tests -v
+python3 -m wind_tunnel demo
+python3 -m wind_tunnel tamper
 ```
 
-The public specimen was validated before publication with **14/14 tests passing**. Its six predeclared cells produce:
+The public specimen was rechecked on **2026-10-30 with 14/14 tests passing**. Its six predeclared cells produce:
 
 ```text
 scenario           native       governed
@@ -38,11 +42,11 @@ context_reset      VERIFIED     VERIFIED
 contradiction      MISMATCH     MISMATCH
 ```
 
-`make tamper` intentionally corrupts recorded evidence and requires verification-only replay to fail with `EVIDENCE_HASH_MISMATCH` while emitting zero replay side effects.
+`python3 -m wind_tunnel tamper` intentionally corrupts recorded evidence. It exits 0 when verification detects the expected `EVIDENCE_HASH_MISMATCH`; this is a successful rejection demonstration, not successful verification of the altered evidence. Direct `verify` on the corrupted bundle exits 1. Replay emits no simulated effects and calls no provider.
 
 The public specimen is intentionally not a copy of Runtime Lab. It extracts the proof primitive: fixed workload, declared faults, native/governed comparison, deterministic authority boundary, independent verdicts, exact evidence bundles, replay, and tamper detection.
 
-One useful difference is deliberate: because the synthetic public runtime is fully controlled, its `context_reset` scenario destroys real transient runtime state and reconstructs verification state from durable storage. The current private Runtime Lab first slice remains narrower and only clears adapter-owned observation state.
+One useful difference is deliberate: because the synthetic public runtime is fully controlled, its `context_reset` scenario destroys real transient runtime state and reconstructs verification state from durable storage. The private Runtime Lab first slice described in the 2026-08-19 snapshot is narrower and only clears adapter-owned observation state.
 
 ---
 
@@ -201,9 +205,9 @@ Replay cannot invoke the specimen runtime, a publisher, or any external system i
 
 ---
 
-## Current Maturity
+## Documented Maturity and Audit Date
 
-The private Runtime Lab feature branch documents the Wind Tunnel as:
+The 2026-08-19 portfolio snapshot describes the private Wind Tunnel as:
 
 - **implemented**;
 - **tested**;

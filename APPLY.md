@@ -1,189 +1,72 @@
-# Apply / Review This FDE Positioning
+# Evaluate This Portfolio
 
-This branch repositions the portfolio around Forward Deployed Engineering and adds one runnable public proof specimen for the Runtime Wind Tunnel.
+Start with the deployment story, then reproduce the public proof. This guide is for reviewers, hiring managers, and engineers who want to distinguish reported operating results from behavior they can run themselves.
 
-The intended narrative is:
+![Portfolio review path from deployment context to runnable proof and evidence boundaries](docs/images/portfolio-map.svg)
 
-```text
-customer problem
-  -> discovery
-  -> technical scope
-  -> integration
-  -> production
-  -> evaluation
-  -> hardening
-  -> measurable impact
-  -> reusable platform capability
-```
+## Choose Your Review Depth
 
-The deployments are the story. The repositories and public specimen are the supporting evidence.
+| Time | Read or run | What to look for |
+|---|---|---|
+| 3 minutes | [Portfolio](README.md) → [Resume](RESUME.md) | Customer problems, role, and deployment map. |
+| 10 minutes | [Lead operations](DEPLOYMENTS/01-real-estate-lead-operations.md) → [Governed execution](DEPLOYMENTS/02-governed-agent-execution.md) → [Field notes](FIELD-NOTES/production-incidents.md) | Integration ownership, failure modes, and the controls they motivated. |
+| Technical review | Run the specimen below, then read [Runtime Wind Tunnel](DEPLOYMENTS/03-runtime-wind-tunnel.md) and the [receipt index](receipts/README.md) | Reproducible behavior, evidence provenance, and limits of each claim. |
+| Working style | [How I Work](HOW_I_WORK.md) → [Forward Deployed Playbook](PLAYBOOKS/FORWARD_DEPLOYED_PLAYBOOK.md) | Discovery, state ownership, authority, recovery, and platform extraction. |
 
----
+## Run the Public Wind Tunnel Specimen
 
-## What Changed
+Prerequisites: Git and **Python 3.11+**. No API keys, network services, Docker, package installation, or live model provider are needed after cloning.
 
-The branch intentionally limits scope to:
-
-- `README.md`
-- `RESUME.md`
-- `HOW_I_WORK.md`
-- `DEPLOYMENTS/01-real-estate-lead-operations.md`
-- `DEPLOYMENTS/02-governed-agent-execution.md`
-- `DEPLOYMENTS/03-runtime-wind-tunnel.md`
-- `PLAYBOOKS/FORWARD_DEPLOYED_PLAYBOOK.md`
-- `FIELD-NOTES/production-incidents.md`
-- `APPLY.md`
-- `specimens/agent-runtime-wind-tunnel/`
-
-No existing production code, receipts, case-study source data, or supporting repositories are modified by this positioning branch. The only new executable code is the self-contained public Wind Tunnel specimen.
-
----
-
-## Local Review
+From a fresh clone:
 
 ```bash
 git clone https://github.com/gabeacosta/ai-portfolio.git
-cd ai-portfolio
-git fetch origin
-git checkout agent/fde-positioning
+cd ai-portfolio/specimens/agent-runtime-wind-tunnel
+python3 --version  # must be 3.11 or newer
+python3 -m unittest discover -s tests -v
+python3 -m wind_tunnel demo
+python3 -m wind_tunnel tamper
 ```
 
-Review the full branch diff:
+If `python3` selects an older version, use an installed Python 3.11+ interpreter for every Python command above. The direct commands avoid requiring Make; `make test`, `make demo`, and `make tamper` are equivalents when Make and a suitable `python3` are available.
 
-```bash
-git diff origin/main...HEAD
-```
-
-Review the primary positioning files:
-
-```bash
-git diff origin/main...HEAD -- README.md RESUME.md HOW_I_WORK.md
-```
-
-Review the deployment/proof surfaces:
-
-```bash
-git diff origin/main...HEAD -- DEPLOYMENTS/ PLAYBOOKS/ FIELD-NOTES/ APPLY.md specimens/
-```
-
-Check changed paths:
-
-```bash
-git diff --name-status origin/main...HEAD
-```
-
----
-
-## Run the Public Wind Tunnel Proof
-
-```bash
-cd specimens/agent-runtime-wind-tunnel
-make test
-make demo
-make tamper
-```
-
-Expected high-level result:
+Expected demo matrix:
 
 ```text
-14 tests passing
-6/6 expected matrix verdicts observed
-Replay verification: FAILED after deliberate tamper
+scenario           native       governed
+baseline           VERIFIED     VERIFIED
+context_reset      VERIFIED     VERIFIED
+contradiction      MISMATCH     MISMATCH
+
+6/6 expected verdicts observed
+```
+
+The test suite should pass. The contradiction rows deliberately produce `MISMATCH`; those are expected outcomes, not failed demonstrations. The tamper command deliberately corrupts a copied evidence bundle and should print:
+
+```text
+Replay verification: FAILED
+Reason: EVIDENCE_HASH_MISMATCH
 Side effects emitted during replay: 0
 ```
 
-The specimen requires no API keys, network calls, Docker, or live model provider.
+`tamper` exits successfully when the deliberate corruption is rejected. Each demo writes fresh bundles under the specimen's `evidence/` directory; existing bundles are not overwritten. See the [specimen README](specimens/agent-runtime-wind-tunnel/README.md) for the bundle contract and individual-cell commands.
 
----
+## What the Evidence Supports
 
-## Link / Markdown Smoke Check
+| Surface | Supports | Boundary |
+|---|---|---|
+| Runnable specimen | Deterministic matrix, declared fault handling, a simulated capability gate, and verification-only replay. | No live-provider benchmark, production policy service, or customer deployment acceptance. |
+| Public implementation links | Inspection of the linked repository's published code and tests. | A repository is not a live service health check. |
+| Deployment narratives and case studies | Context for reported operating outcomes and architectural choices. | Reported business figures are not independently audited by this specimen. |
+| [Receipt index](receipts/README.md) | The public evidence excerpts and provenance disclosed there. | An excerpt is not a complete private evidence corpus or proof of current availability. |
+| [Open-source recipes](open-source/README.md) | Inline implementation patterns to inspect and adapt. | README-only recipes, not installed modules or production certification. |
 
-At minimum, verify that the relative navigation paths render correctly on GitHub:
+## Questions This Portfolio Should Answer
 
-```text
-README.md
-  -> RESUME.md
-  -> HOW_I_WORK.md
-  -> DEPLOYMENTS/*
-  -> PLAYBOOKS/FORWARD_DEPLOYED_PLAYBOOK.md
-  -> FIELD-NOTES/production-incidents.md
-  -> specimens/agent-runtime-wind-tunnel/
-  -> APPLY.md
-```
+- What operating problem did Gabe own, and which systems did he integrate?
+- What failed, and which architectural control followed?
+- Which claims have public code, tests, or disclosed evidence?
+- Which result can a reviewer independently reproduce?
+- How did field constraints become reusable capability?
 
-The branch does not add a markdown-link checker dependency. The intended review remains dependency-light.
-
----
-
-## Optional GitHub CLI Review
-
-If `gh` is installed and authenticated:
-
-```bash
-gh repo view gabeacosta/ai-portfolio --web
-```
-
-Inspect the branch:
-
-```bash
-gh browse --branch agent/fde-positioning
-```
-
-Create a draft pull request if one does not already exist:
-
-```bash
-gh pr create \
-  --repo gabeacosta/ai-portfolio \
-  --base main \
-  --head agent/fde-positioning \
-  --draft \
-  --title "Position portfolio for Forward Deployed Engineer roles" \
-  --body "Reframes the portfolio around customer deployments, production hardening, and reusable platform capability, and adds a zero-key public Runtime Wind Tunnel specimen as executable proof."
-```
-
----
-
-## Merge
-
-After review:
-
-```bash
-git checkout main
-git pull --ff-only origin main
-git merge --ff-only origin/agent/fde-positioning
-git push origin main
-```
-
-If `main` has moved and the branch can no longer fast-forward cleanly, do not force the merge. Rebase or merge intentionally, rerun the public specimen tests, re-review the diff, and then land it through the pull request.
-
----
-
-## Recruiter / Hiring-Manager Evaluation Path
-
-For a fast review of the portfolio:
-
-1. Start with [`README.md`](README.md) for the FDE thesis and deployment map.
-2. Read [`DEPLOYMENTS/01-real-estate-lead-operations.md`](DEPLOYMENTS/01-real-estate-lead-operations.md) for customer workflow ownership.
-3. Read [`DEPLOYMENTS/02-governed-agent-execution.md`](DEPLOYMENTS/02-governed-agent-execution.md) for incident-driven infrastructure hardening.
-4. Open [`specimens/agent-runtime-wind-tunnel/`](specimens/agent-runtime-wind-tunnel/) and run `make demo` / `make tamper` for executable runtime-evaluation proof.
-5. Read [`DEPLOYMENTS/03-runtime-wind-tunnel.md`](DEPLOYMENTS/03-runtime-wind-tunnel.md) for the larger evaluation/runtime architecture and scope boundaries.
-6. Open the linked public repos to validate the other implementation evidence.
-7. Use [`RESUME.md`](RESUME.md) for role alignment and [`HOW_I_WORK.md`](HOW_I_WORK.md) for operating style.
-
----
-
-## Positioning Test
-
-This branch succeeds if a reviewer can answer these questions within a few minutes:
-
-- What customer or operating problems has Gabe owned?
-- What did he actually integrate and ship?
-- What failed in production and how did the architecture change?
-- Which claims have public implementation evidence?
-- Can one of the runtime claims be independently reproduced rather than merely read?
-- How does field work become reusable platform capability?
-- Why is Forward Deployed Engineer a better description than a generic AI/automation title?
-
-If those answers are not obvious, the positioning still needs work.
-
-[Back to portfolio](README.md)
+[Back to portfolio](README.md) · [How I Work](HOW_I_WORK.md) · [Public specimen](specimens/agent-runtime-wind-tunnel/README.md)

@@ -2,7 +2,9 @@
 
 Forward-deployed systems become credible when production failures change the design.
 
-These are three incidents where the initial architecture looked reasonable, production exposed a different property, and the fix became a reusable control rather than a one-off patch.
+These are historical operating accounts of three incidents and the controls they motivated. Durations and proportions below are reported from those incidents, not current service measurements. Linked public repositories expose implementation slices; they do not establish present deployment health or independently reproduce the original outages.
+
+![Three incident lessons: process health versus readiness, audit continuity across rotation, and code identity across recreation](../docs/images/incident-reliability.svg)
 
 ---
 
@@ -59,7 +61,7 @@ The implementation worked until log rotation.
 
 When the new active file was empty, the writer initialized the next record against a sentinel instead of the last durable hash. The apparent chain silently restarted at every rotation boundary.
 
-The public-safe repo documents that roughly 60% of records in the affected deployment were anchored to the sentinel rather than one continuous chain.
+The historical account reports that roughly 60% of records in the affected deployment were anchored to the sentinel rather than one continuous chain. This proportion describes that affected corpus; it is not a current audit-log measurement.
 
 ### Failed property
 
@@ -73,7 +75,7 @@ The issue was not "logging." It was loss of continuity across an operational lif
 
 ### Fix
 
-The writer now recovers the prior durable chain tail when the active file is empty.
+The published remediation recovers the prior durable chain tail when the active file is empty.
 
 The regression proof covers both:
 
@@ -82,7 +84,7 @@ The regression proof covers both:
 
 Concurrent read-tail → append behavior is also protected so simultaneous writers cannot fork the chain.
 
-Public proof: [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine).
+Public implementation reference: [`governed-mcp-spine`](https://github.com/gabeacosta/governed-mcp-spine).
 
 ### Reusable lesson
 
@@ -127,7 +129,7 @@ This control is intentionally narrow:
 - it does not automatically block startup;
 - it does reveal when supposedly equivalent deployments are running different bytes.
 
-Public proof: [`clue-runtime`](https://github.com/gabeacosta/clue-runtime).
+Public implementation reference: [`clue-runtime`](https://github.com/gabeacosta/clue-runtime).
 
 ### Reusable lesson
 

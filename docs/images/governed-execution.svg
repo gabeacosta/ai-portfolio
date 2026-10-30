@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520" role="img" aria-labelledby="title desc"><title id="title">Agent execution: authority before effects</title><desc id="desc">Agent execution: authority before effects Public source excerpt; diagram summarizes the intended integration. Agent request: Envelope + capability: Signing helper omitted Policy + path scope: Declared grant and target: Not a universal sandbox Allow / deny / review: Decision before effect: Full wiring not published Audit continuity: Rotation fallback + lock: Selected local-file tests 14 inspected tests cover path scope, rotation fallback, and local audit writes; not HMAC or full service behavior.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9" fill="#007F7A"/></marker></defs>
+<rect width="1400" height="520" rx="16" fill="#F7F9FC"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="48" y="64" font-size="36" fill="#10253C" font-weight="700">Agent execution: authority before effects</text>
+<text x="48" y="106" font-size="21" fill="#405570" font-weight="400">Public source excerpt; diagram summarizes the intended integration.</text>
+<rect x="48.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="48.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="68.0" y="217" font-size="24" fill="#10253C" font-weight="700">Agent request</text>
+<text x="68.0" y="261" font-size="20" fill="#405570" font-weight="400">Envelope + capability</text>
+<text x="68.0" y="295" font-size="20" fill="#405570" font-weight="400">Signing helper omitted</text>
+<path d="M345.0,263 L377.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="345.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="386.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="386.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="406.0" y="217" font-size="24" fill="#10253C" font-weight="700">Policy + path scope</text>
+<text x="406.0" y="261" font-size="20" fill="#405570" font-weight="400">Declared grant and target</text>
+<text x="406.0" y="295" font-size="20" fill="#405570" font-weight="400">Not a universal sandbox</text>
+<path d="M683.0,263 L715.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="683.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="724.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="724.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="744.0" y="217" font-size="24" fill="#10253C" font-weight="700">Allow / deny /</text>
+<text x="744.0" y="246" font-size="24" fill="#10253C" font-weight="700">review</text>
+<text x="744.0" y="290" font-size="20" fill="#405570" font-weight="400">Decision before effect</text>
+<text x="744.0" y="324" font-size="20" fill="#405570" font-weight="400">Full wiring not published</text>
+<path d="M1021.0,263 L1053.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="1021.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="1062.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="1062.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="1082.0" y="217" font-size="24" fill="#10253C" font-weight="700">Audit continuity</text>
+<text x="1082.0" y="261" font-size="20" fill="#405570" font-weight="400">Rotation fallback + lock</text>
+<text x="1082.0" y="295" font-size="20" fill="#405570" font-weight="400">Selected local-file tests</text>
+<text x="48" y="414" font-size="21" fill="#405570" font-weight="400">14 inspected tests cover path scope, rotation fallback, and local audit writes; not HMAC or full service</text><text x="48" y="444" font-size="21" fill="#405570" font-weight="400">behavior.</text>
+<text x="48" y="490" font-size="16" fill="#405570" font-weight="400">ARCHITECTURE SUMMARY  |  Sources and scope are linked in the accompanying write-up</text>
+</g></svg>

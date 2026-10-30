@@ -4,11 +4,9 @@
 
 The job is not to deliver an AI demo. The job is to understand the operating problem well enough to ship a useful system, make its behavior observable, harden the failure paths, and feed the recurring lessons back into a reusable platform.
 
-My default loop is:
+My default loop connects delivery to evidence and platform feedback:
 
-```text
-Discover -> Scope -> Build -> Integrate -> Ship -> Observe -> Evaluate -> Harden -> Extract
-```
+![Field loop from discovery through deployment, evaluation, hardening, and reusable capability](docs/images/field-loop.svg)
 
 Each stage has a different purpose. Skipping stages usually creates hidden cost later.
 
@@ -30,7 +28,7 @@ Questions I care about:
 
 The output is not a feature list. It is a small set of falsifiable statements about the problem.
 
-**Example:** "We need an AI lead agent" is not a useful requirement. "100+ inbound leads arrive every week, only ~40 receive timely contact, and hot leads need first contact inside 15 minutes" is.
+**Illustrative requirement:** "We need an AI lead agent" is not a useful requirement. "100+ inbound leads arrive every week, only ~40 receive timely contact, and hot leads need first contact inside 15 minutes" is.
 
 ---
 
@@ -148,7 +146,7 @@ My preferred loop is:
 incident -> reproduce -> isolate failure mode -> add control -> add regression proof
 ```
 
-Examples from this portfolio:
+Historical examples reported in this portfolio (the [field notes](FIELD-NOTES/production-incidents.md) identify their public evidence boundaries):
 
 - a health endpoint reported `ok` while its database dependency was unavailable for six days -> split health from readiness and test both failure directions;
 - a hash-chained audit trail restarted after log rotation -> anchor rotation to durable prior state and add rotation regression tests;
@@ -215,7 +213,7 @@ I distinguish:
 | **Tested** | Defined behavior has automated checks. |
 | **Verified** | Evidence supports the property being claimed. |
 | **Accepted** | The designated verifier/gate has authorized the result. |
-| **Deployed** | The system is operating in the intended environment. |
+| **Deployed** | The system was placed in the intended environment; a claim that it is operating now needs dated evidence. |
 
 This keeps prototypes from being represented as production systems and prevents test completion from being mistaken for business acceptance.
 

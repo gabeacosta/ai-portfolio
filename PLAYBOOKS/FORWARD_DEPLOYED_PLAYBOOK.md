@@ -6,9 +6,7 @@ This is the operating playbook I use when a customer problem is too cross-functi
 
 The goal is to move from ambiguity to a production-capable vertical slice while preserving enough evidence to learn what should become platform capability.
 
-```text
-Discover -> Specify -> Scope -> Build -> Integrate -> Ship -> Observe -> Evaluate -> Harden -> Extract
-```
+![Delivery loop linking discovery, scoped integration, operation, evaluation, and platform extraction](../docs/images/field-loop.svg)
 
 The order matters. The amount of ceremony does not. Small problems should stay small.
 
@@ -39,7 +37,7 @@ Bad:
 
 > Build an AI assistant for leads.
 
-Better:
+Better (illustrative acceptance requirement):
 
 > 100+ leads arrive each week, only ~40 receive timely contact, and hot leads should receive first contact inside 15 minutes without replacing the CRM as the source of truth.
 
@@ -246,7 +244,7 @@ When production breaks:
 5. write a regression test/evidence path;
 6. document what the fix does **not** prove.
 
-Examples in this portfolio:
+Historical examples reported in the [field notes](../FIELD-NOTES/production-incidents.md):
 
 - lying health endpoint -> dependency-aware readiness;
 - audit rotation reset -> durable prior-chain anchoring;
@@ -326,7 +324,7 @@ Use precise labels:
 | Tested | automated behavior checks exist |
 | Verified | evidence supports the claimed property |
 | Accepted | designated gate/verifier authorized the result |
-| Deployed | running in intended operating environment |
+| Deployed | placed in the intended environment; current operation requires dated evidence |
 
 Never collapse these into "done."
 

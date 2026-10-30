@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520" role="img" aria-labelledby="title desc"><title id="title">Property enrichment: estimates remain labelled</title><desc id="desc">Property enrichment: estimates remain labelled Historical integration summary; no live property data is retrieved by this portfolio. Public data adapter: Realtor.com / HomeHarvest: Serialized requests Equity estimate: Amortization assumptions: Not a mortgage-balance lookup Scoring input: Combine selected signals: Keep missing data explicit Operator review: Inspect uncertainty: Override when needed The equity estimate assumes 30 years, 10% down, and a 6.5% rate; it is not a verified valuation or loan balance.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9" fill="#007F7A"/></marker></defs>
+<rect width="1400" height="520" rx="16" fill="#F7F9FC"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="48" y="64" font-size="36" fill="#10253C" font-weight="700">Property enrichment: estimates remain labelled</text>
+<text x="48" y="106" font-size="21" fill="#405570" font-weight="400">Historical integration summary; no live property data is retrieved by this portfolio.</text>
+<rect x="48.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="48.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="68.0" y="217" font-size="24" fill="#10253C" font-weight="700">Public data adapter</text>
+<text x="68.0" y="261" font-size="20" fill="#405570" font-weight="400">Realtor.com / HomeHarvest</text>
+<text x="68.0" y="295" font-size="20" fill="#405570" font-weight="400">Serialized requests</text>
+<path d="M345.0,263 L377.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="345.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="386.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="386.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="406.0" y="217" font-size="24" fill="#10253C" font-weight="700">Equity estimate</text>
+<text x="406.0" y="261" font-size="20" fill="#405570" font-weight="400">Amortization assumptions</text>
+<text x="406.0" y="295" font-size="20" fill="#405570" font-weight="400">Not a mortgage-balance</text><text x="406.0" y="321" font-size="20" fill="#405570" font-weight="400">lookup</text>
+<path d="M683.0,263 L715.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="683.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="724.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="724.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="744.0" y="217" font-size="24" fill="#10253C" font-weight="700">Scoring input</text>
+<text x="744.0" y="261" font-size="20" fill="#405570" font-weight="400">Combine selected signals</text>
+<text x="744.0" y="295" font-size="20" fill="#405570" font-weight="400">Keep missing data</text><text x="744.0" y="321" font-size="20" fill="#405570" font-weight="400">explicit</text>
+<path d="M1021.0,263 L1053.0,263" fill="none" stroke="#007F7A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="1021.0" y="241" font-size="15" fill="#405570" font-weight="400">then</text>
+<rect x="1062.0" y="174" width="290.0" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="1062.0" y="174" width="290.0" height="6" rx="3" fill="#007F7A"/>
+<text x="1082.0" y="217" font-size="24" fill="#10253C" font-weight="700">Operator review</text>
+<text x="1082.0" y="261" font-size="20" fill="#405570" font-weight="400">Inspect uncertainty</text>
+<text x="1082.0" y="295" font-size="20" fill="#405570" font-weight="400">Override when needed</text>
+<text x="48" y="414" font-size="21" fill="#405570" font-weight="400">The equity estimate assumes 30 years, 10% down, and a 6.5% rate; it is not a verified valuation or loan balance.</text>
+<text x="48" y="490" font-size="16" fill="#405570" font-weight="400">ARCHITECTURE SUMMARY  |  Sources and scope are linked in the accompanying write-up</text>
+</g></svg>

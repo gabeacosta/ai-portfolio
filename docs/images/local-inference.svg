@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520" role="img" aria-labelledby="title desc"><title id="title">Local workloads use distinct inference paths</title><desc id="desc">Local workloads use distinct inference paths Architecture summary from the published evaluation and cost notes. Intent classification: Qwen-family classifier: Ollama in the eval summary Conversation generation: Conversation-engine model: MLX in the cost summary Speech synthesis: Kokoro in the cost notes: Separate TTS workload These summaries do not establish one universal routing chain or metered production savings.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9" fill="#007F7A"/></marker></defs>
+<rect width="1400" height="520" rx="16" fill="#F7F9FC"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="48" y="64" font-size="36" fill="#10253C" font-weight="700">Local workloads use distinct inference paths</text>
+<text x="48" y="106" font-size="21" fill="#405570" font-weight="400">Architecture summary from the published evaluation and cost notes.</text>
+<rect x="48.0" y="174" width="418.6666666666667" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="48.0" y="174" width="418.6666666666667" height="6" rx="3" fill="#007F7A"/>
+<text x="68.0" y="217" font-size="24" fill="#10253C" font-weight="700">Intent classification</text>
+<text x="68.0" y="261" font-size="20" fill="#405570" font-weight="400">Qwen-family classifier</text>
+<text x="68.0" y="295" font-size="20" fill="#405570" font-weight="400">Ollama in the eval summary</text>
+<rect x="490.6666666666667" y="174" width="418.6666666666667" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="490.6666666666667" y="174" width="418.6666666666667" height="6" rx="3" fill="#007F7A"/>
+<text x="510.6666666666667" y="217" font-size="24" fill="#10253C" font-weight="700">Conversation generation</text>
+<text x="510.6666666666667" y="261" font-size="20" fill="#405570" font-weight="400">Conversation-engine model</text>
+<text x="510.6666666666667" y="295" font-size="20" fill="#405570" font-weight="400">MLX in the cost summary</text>
+<rect x="933.3333333333334" y="174" width="418.6666666666667" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="933.3333333333334" y="174" width="418.6666666666667" height="6" rx="3" fill="#007F7A"/>
+<text x="953.3333333333334" y="217" font-size="24" fill="#10253C" font-weight="700">Speech synthesis</text>
+<text x="953.3333333333334" y="261" font-size="20" fill="#405570" font-weight="400">Kokoro in the cost notes</text>
+<text x="953.3333333333334" y="295" font-size="20" fill="#405570" font-weight="400">Separate TTS workload</text>
+<text x="48" y="414" font-size="21" fill="#405570" font-weight="400">These summaries do not establish one universal routing chain or metered production savings.</text>
+<text x="48" y="490" font-size="16" fill="#405570" font-weight="400">ARCHITECTURE SUMMARY  |  Sources and scope are linked in the accompanying write-up</text>
+</g></svg>

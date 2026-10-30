@@ -1,49 +1,37 @@
 # Conversation State Tracker
 
-Track question coverage, detect evasion, and generate inline directives for AI-guided conversations.
+Track explicit question coverage and generate a next-turn directive from caller-supplied conversation events.
 
-## The Problem This Solves
+**Status: README-only recipe.** Save the implementation below as `state_tracker.py` to run its deterministic demo with `python3 state_tracker.py`. Python 3.11+ is required; the recipe uses only the standard library. No checked-in module, package, transcript classifier, or recipe test suite is included.
 
-AI phone agents forget what they've already asked. They re-ask questions. They don't notice when a caller is dodging. They can't adapt mid-conversation to resistance patterns. This tracker fixes all three.
+![Caller-supplied question and emotion events update explicit state, which produces a directive for a separate model](../../docs/images/conversation-recipe.svg)
 
-## How It Works
+## The Problem This Illustrates
 
-```
-                    ┌──────────────────┐
-  Caller says  ───▶ │  State Tracker    │
-  something         │                   │
-                    │  ✓ Track answered │
-                    │  ✓ Detect evasion │
-                    │  ✓ Read emotion   │
-                    │  ✓ Pick next Q    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Inline Directive  │
-                    │                   │
-                    │ "YOUR NEXT        │
-                    │  QUESTION: ..."   │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                      Model generates
-                      natural response
-                      following directive
-```
+A conversational model can repeat questions or lose track of coverage. This recipe keeps question status outside the model and selects a directive from that state. It does not listen to audio, parse transcripts, detect evasion, or infer emotion. A separate application or classifier must supply those labels.
+
+## Turn Contract
+
+1. Create one tracker per conversation with stable question IDs.
+2. Call `generate_directive()` and pass the result to your model integration.
+3. When a question is actually asked, call `record_ask(question_id)`.
+4. After interpreting the response, call `record_answer(...)` or `record_evasion(...)`; call `update_emotion(...)` only with an externally supplied label.
+5. Call `advance_turn()`, then generate the next directive.
+
+An `ASKED` question is awaiting interpretation and is excluded from the pending list. Resolve it before generating the next question. A generated directive does not itself record that the model asked it or prove that the model followed it.
 
 ## `state_tracker.py`
 
 ```python
 """
 Conversation State Tracker
-Tracks coverage, evasion, and emotional state across multi-turn conversations.
+Tracks coverage and supplied evasion/emotion labels across multi-turn conversations.
 Generates inline directives for AI-guided dialogue.
 
 MIT License
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
@@ -93,7 +81,7 @@ class ConversationState:
 
     @property
     def coverage(self) -> float:
-        """Percentage of questions answered."""
+        """Fraction of questions answered (0.0 to 1.0)."""
         if not self.questions:
             return 0.0
         answered = sum(1 for q in self.questions if q.status == QuestionStatus.ANSWERED)
@@ -101,7 +89,7 @@ class ConversationState:
 
     @property
     def core_coverage(self) -> float:
-        """Percentage of core questions answered."""
+        """Fraction of core questions answered (0.0 to 1.0)."""
         core = [q for q in self.questions if q.is_core]
         if not core:
             return 0.0
@@ -157,7 +145,7 @@ class StateTracker:
             self.state.rapport_score = max(0.0, self.state.rapport_score - 0.1)
 
     def update_emotion(self, state: EmotionalState):
-        """Update detected emotional state."""
+        """Store an emotional-state label supplied by the calling application."""
         self.state.emotional_state = state
 
     def advance_turn(self):
@@ -167,10 +155,18 @@ class StateTracker:
     def generate_directive(self) -> str:
         """
         Generate an inline directive for the AI model.
-        This is the core output — appended to the user's turn
-        before the model generates its response.
+        The calling application passes this to its model integration.
+        Generation alone does not record that a question was asked.
         """
         state = self.state
+
+        # Hostile → de-escalate
+        if state.emotional_state == EmotionalState.HOSTILE:
+            return (
+                "YOUR NEXT STEP: The caller is hostile. Do NOT push for information. "
+                "De-escalate with empathy. If they remain hostile, offer to call back "
+                "at a better time."
+            )
 
         # High evasion → acknowledge and try softer approach
         if state.evasion_streak >= 2:
@@ -189,14 +185,6 @@ class StateTracker:
             if next_q:
                 directive += f"When ready, transition to: {next_q.text}"
             return directive
-
-        # Hostile → de-escalate
-        if state.emotional_state == EmotionalState.HOSTILE:
-            return (
-                "YOUR NEXT STEP: The caller is hostile. Do NOT push for information. "
-                "De-escalate with empathy. If they remain hostile, offer to call back "
-                "at a better time."
-            )
 
         # Normal flow → ask next pending question
         next_q = self._pick_next_question()
@@ -273,7 +261,7 @@ class StateTracker:
         )
 
         if soft:
-            # In soft mode, skip questions evaded 2+ times
+            # Prefer less-evaded questions; fall back to candidates if none remain
             candidates = [q for q in candidates if q.evasion_count < 2] or candidates
 
         return candidates[0] if candidates else None
@@ -303,12 +291,12 @@ if __name__ == "__main__":
     print("Turn 2:", tracker.generate_directive())
 
     tracker.record_ask("motivation")
-    tracker.record_evasion("motivation")  # Caller dodged
+    tracker.record_evasion("motivation")  # Application supplies the evasion label
     tracker.advance_turn()
 
     print("Turn 3:", tracker.generate_directive())
 
-    tracker.record_evasion("motivation")  # Dodged again
+    tracker.record_evasion("motivation")  # Simulated second evasion
     tracker.update_emotion(EmotionalState.HESITANT)
     tracker.advance_turn()
 
@@ -317,14 +305,18 @@ if __name__ == "__main__":
     print("\nSummary:", tracker.get_summary())
 ```
 
-## Why This Matters
+## What the Recipe Demonstrates
 
-Traditional approach: Put all instructions in the system prompt and hope the model remembers them 10 turns later. **It doesn't.**
+The demo supplies synthetic answers and evasion labels, then prints the resulting directives and summary. Coverage is derived from explicit answered statuses; `get_summary()` expresses it as a percentage. The rapport score is a hand-written heuristic, not a validated measurement of a caller's feelings.
 
-This approach: The state tracker observes the conversation in real-time and tells the model exactly what to do next. The model only needs to be good at following a single instruction per turn — which even small models do well.
+No transcript dataset, scoring rubric, or reproducible model benchmark accompanies this recipe, so it makes no numerical claim about conversation quality or question coverage in live calls. Model compliance with a directive must be evaluated separately.
 
-**Result:** Base Qwen 2.5 1.5B (no fine-tuning) achieves 7.2/10 question coverage using inline directives alone.
+## Limits to Address Before Adoption
 
----
+- State is in memory. Persistence, restart recovery, session isolation, and concurrent updates belong to the integrating application.
+- Unknown question IDs are silently ignored, and duplicate IDs are not rejected. Validate definitions and event IDs at the boundary.
+- Supplied labels can be wrong. Repeated evasion invokes a softer directive, but the question picker can revisit repeatedly evaded questions if no alternatives remain. Add your own consent, stop, and retry policy.
+- Directive generation does not enforce model behavior or authorize calls, messages, CRM writes, or other external effects.
+- The demo does not implement transcription, classification, model calls, telephony, or a handoff integration.
 
-[← Back to Open Source Index](../README.md)
+[Back to Open-Source Recipes](../README.md) · [Portfolio](../../README.md)

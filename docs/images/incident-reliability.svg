@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520" role="img" aria-labelledby="title desc"><title id="title">Three incidents, three reliability properties</title><desc id="desc">Three incidents, three reliability properties Historical incident accounts motivate narrower, inspectable engineering controls. Readiness: Process liveness is not enough: Check required dependencies Audit continuity: Rotation must preserve history: Recover a durable chain tail Deployment identity: A hotfix can vanish on rebuild: Fingerprint the loaded artifact Public modules and tests cover selected controls; this diagram does not assert current production health.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9" fill="#007F7A"/></marker></defs>
+<rect width="1400" height="520" rx="16" fill="#F7F9FC"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="48" y="64" font-size="36" fill="#10253C" font-weight="700">Three incidents, three reliability properties</text>
+<text x="48" y="106" font-size="21" fill="#405570" font-weight="400">Historical incident accounts motivate narrower, inspectable engineering controls.</text>
+<rect x="48.0" y="174" width="418.6666666666667" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="48.0" y="174" width="418.6666666666667" height="6" rx="3" fill="#007F7A"/>
+<text x="68.0" y="217" font-size="24" fill="#10253C" font-weight="700">Readiness</text>
+<text x="68.0" y="261" font-size="20" fill="#405570" font-weight="400">Process liveness is not enough</text>
+<text x="68.0" y="295" font-size="20" fill="#405570" font-weight="400">Check required dependencies</text>
+<rect x="490.6666666666667" y="174" width="418.6666666666667" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="490.6666666666667" y="174" width="418.6666666666667" height="6" rx="3" fill="#007F7A"/>
+<text x="510.6666666666667" y="217" font-size="24" fill="#10253C" font-weight="700">Audit continuity</text>
+<text x="510.6666666666667" y="261" font-size="20" fill="#405570" font-weight="400">Rotation must preserve history</text>
+<text x="510.6666666666667" y="295" font-size="20" fill="#405570" font-weight="400">Recover a durable chain tail</text>
+<rect x="933.3333333333334" y="174" width="418.6666666666667" height="178" rx="10" fill="#FFFFFF" stroke="#CCD7E2" stroke-width="1.5"/>
+<rect x="933.3333333333334" y="174" width="418.6666666666667" height="6" rx="3" fill="#007F7A"/>
+<text x="953.3333333333334" y="217" font-size="24" fill="#10253C" font-weight="700">Deployment identity</text>
+<text x="953.3333333333334" y="261" font-size="20" fill="#405570" font-weight="400">A hotfix can vanish on rebuild</text>
+<text x="953.3333333333334" y="295" font-size="20" fill="#405570" font-weight="400">Fingerprint the loaded artifact</text>
+<text x="48" y="414" font-size="21" fill="#405570" font-weight="400">Public modules and tests cover selected controls; this diagram does not assert current production health.</text>
+<text x="48" y="490" font-size="16" fill="#405570" font-weight="400">ARCHITECTURE SUMMARY  |  Sources and scope are linked in the accompanying write-up</text>
+</g></svg>

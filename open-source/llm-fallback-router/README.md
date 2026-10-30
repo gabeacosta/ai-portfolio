@@ -1,41 +1,66 @@
 # LLM Fallback Router
 
-Multi-provider LLM routing with automatic failover, latency tracking, and cost-aware selection.
+Priority-ordered provider fallback with a per-provider failure cooldown and latency statistics.
+
+**Status: README-only recipe.** This directory does not contain an importable `llm_router.py`, package, or recipe test suite. Save the implementation block below as `llm_router.py` before using the import example. Deployment work motivated the pattern; this page does not establish that this exact snippet is production-tested or currently deployed.
+
+![Priority router attempts providers in order, skips providers in cooldown, and returns the first successful response](../../docs/images/router-recipe.svg)
 
 ## Why This Exists
 
-Single-provider LLM calls are a single point of failure. Rate limits, outages, and cost spikes happen constantly. This router wraps multiple providers in a priority chain with automatic failover.
+A provider outage or rate limit can interrupt a workflow. This recipe tries explicitly configured providers in priority order and temporarily skips providers after repeated failures. It does not select by price, quality, or observed latency.
+
+## Prerequisites
+
+Use Python 3.11+ and install `httpx` in a virtual environment:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python3 -m pip install httpx
+```
+
+Choose endpoints and models supported by your providers. Each configuration requires `base_url` and `model`; this recipe does not discover endpoints or credentials. Requests can incur provider charges. Keep credentials in environment variables and out of source files.
 
 ## Usage
 
+After saving the implementation as `llm_router.py`, set `LLM_PRIMARY_BASE_URL`, `LLM_PRIMARY_MODEL`, `LLM_FALLBACK_BASE_URL`, and `LLM_FALLBACK_MODEL` in your shell. For OpenAI-compatible endpoints, each base URL must include its API prefix (often `/v1`) because the recipe appends `/chat/completions`. Optional keys come from `LLM_PRIMARY_API_KEY` and `LLM_FALLBACK_API_KEY`.
+
 ```python
+import os
+
 from llm_router import LLMRouter
 
 router = LLMRouter([
-    {"provider": "local", "base_url": "http://localhost:LOCAL_PORT/v1", "model": "qwen2.5:1.5b", "priority": 1},  # replace with your actual port
-    {"provider": "openai_compat", "base_url": "http://localhost:OLLAMA_PORT/v1", "model": "qwen2.5:1.5b", "priority": 2},  # replace with your actual port
-    {"provider": "xai", "api_key": "...", "model": "grok-4-fast", "priority": 3},
-    {"provider": "google", "api_key": "...", "model": "gemini-flash-lite", "priority": 4},
-    {"provider": "anthropic", "api_key": "...", "model": "claude-haiku-4.5", "priority": 5},
+    {
+        "provider": "primary",
+        "base_url": os.environ["LLM_PRIMARY_BASE_URL"],
+        "model": os.environ["LLM_PRIMARY_MODEL"],
+        "api_key": os.environ.get("LLM_PRIMARY_API_KEY"),
+        "priority": 1,
+    },
+    {
+        "provider": "fallback",
+        "base_url": os.environ["LLM_FALLBACK_BASE_URL"],
+        "model": os.environ["LLM_FALLBACK_MODEL"],
+        "api_key": os.environ.get("LLM_FALLBACK_API_KEY"),
+        "priority": 2,
+    },
 ])
 
 response = router.complete(
     messages=[{"role": "user", "content": "Classify this intent..."}],
     max_tokens=200,
-    timeout=5.0
+    timeout=5.0,
 )
 
 print(response.text)
-print(response.provider_used)      # Which provider actually served it
-print(response.latency_ms)         # End-to-end latency
-print(response.fallback_count)     # How many providers were tried
+print(response.provider_used)   # Provider that returned successfully
+print(response.latency_ms)      # Successful attempt only, not total failover time
+print(response.fallback_count)  # Failed or cooldown-skipped entries before success
 ```
 
-## Install
-
-```bash
-pip install httpx  # Only dependency
-```
+For the Anthropic branch, the provider name must contain `anthropic`, the base URL must be the API origin without `/v1` (the recipe appends `/v1/messages`), and messages must use that API's supported user/assistant format. System instructions require adaptation to its separate system field; they are not translated here. Provider-specific features, streaming, and tool calls are outside this recipe.
 
 ---
 
@@ -128,7 +153,7 @@ class LLMRouter:
                 model=p["model"],
                 priority=p.get("priority", 99),
                 api_key=p.get("api_key"),
-                headers=p.get("headers", {}),
+                headers=dict(p.get("headers", {})),
                 max_failures=p.get("max_failures", 3),
                 cooldown_seconds=p.get("cooldown_seconds", 60.0),
             )
@@ -193,8 +218,8 @@ class LLMRouter:
             except Exception as e:
                 provider.record_failure()
                 fallback_count += 1
-                errors.append(f"{provider.name}: {type(e).__name__}: {e}")
-                logger.warning(f"Provider {provider.name} failed: {e}")
+                errors.append(f"{provider.name}: {type(e).__name__}")
+                logger.warning("Provider %s failed (%s)", provider.name, type(e).__name__)
                 continue
 
         raise RuntimeError(
@@ -237,11 +262,15 @@ class LLMRouter:
             resp.raise_for_status()
             data = resp.json()
 
-        # Extract text from response
+        # This text-only recipe treats missing or empty text as a failed attempt.
         if is_anthropic:
-            text = data.get("content", [{}])[0].get("text", "")
+            text = "".join(
+                block["text"] for block in data["content"] if block.get("type") == "text"
+            )
         else:
-            text = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+            text = data["choices"][0]["message"]["content"]
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError("Provider returned no text")
 
         return {"text": text, "raw": data}
 
@@ -266,14 +295,14 @@ if __name__ == "__main__":
     # Example: local-only setup
     router = LLMRouter([
         {
-            "provider": "mlx_local",
-            "base_url": "http://localhost:LOCAL_PORT/v1",  # replace with your actual port
+            "provider": "primary_local",
+            "base_url": "http://127.0.0.1:8000/v1",  # illustrative; configure your service
             "model": "qwen2.5:1.5b",
             "priority": 1,
         },
         {
             "provider": "ollama_local",
-            "base_url": "http://localhost:OLLAMA_PORT/v1",  # replace with your actual port
+            "base_url": "http://127.0.0.1:11434/v1",  # requires a running local provider
             "model": "qwen2.5:1.5b",
             "priority": 2,
         },
@@ -293,21 +322,23 @@ if __name__ == "__main__":
     print("\nProvider stats:", json.dumps(router.get_stats(), indent=2))
 ```
 
-## Features
+## What the Recipe Covers
 
-- **Priority-ordered routing** — tries providers in order, falls to next on failure
-- **Circuit breaker** — after N consecutive failures, provider enters cooldown
-- **Latency tracking** — exponential moving average per provider
-- **Multi-format** — handles both OpenAI-compatible and Anthropic APIs
-- **Zero lock-in** — works with any OpenAI-compatible endpoint (Ollama, vLLM, LiteLLM, MLX, etc.)
+- **Priority routing** — first successful text response wins.
+- **Failure cooldown** — in-memory counters skip a provider after repeated failures.
+- **Latency statistics** — an exponential moving average of successful calls per provider.
+- **Two request shapes** — a basic OpenAI-compatible chat request or Anthropic Messages request.
+- **Provider pinning** — `required_provider` restricts candidates to the named provider.
 
-## Production Notes
+## Limits to Address Before Adoption
 
-- Set `timeout` per your latency budget (voice AI needs <2s, batch can tolerate 30s+)
-- Use `required_provider` to pin specific requests (e.g., fine-tuned model for classification)
-- Monitor `get_stats()` to detect degrading providers before they circuit-break
-- The circuit breaker cooldown prevents hammering a failing provider
+- `timeout` is passed to each HTTP attempt; it is not a total failover deadline. Multiple failures can exceed the caller's overall latency budget.
+- All exceptions count as provider failures, including malformed responses, configuration errors, and authentication failures. This is not a retry classification policy.
+- Circuit state lives in one Python object. It is not persisted, shared across processes, or protected for concurrent callers; it does not implement a coordinated half-open probe.
+- A new HTTP client is opened for each attempt. No streaming, cancellation, connection-pool lifecycle, rate-limit backoff, or idempotency contract is provided.
+- Exception logs contain the provider name and exception class only. Do not add raw request, response, URL, or credential logging without a sanitization policy. `raw` retains the provider response in memory.
+- Test your provider's current request/response schema and the entire failure path before relying on this recipe. No live-provider compatibility or latency target is demonstrated here.
 
----
+For a checked-in runnable harness with deterministic failure tests, see the [Wind Tunnel specimen](../../specimens/agent-runtime-wind-tunnel/README.md).
 
-[← Back to Open Source Index](../README.md)
+[Back to Open-Source Recipes](../README.md) · [Portfolio](../../README.md)
